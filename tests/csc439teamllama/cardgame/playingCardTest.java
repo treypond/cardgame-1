@@ -11,7 +11,12 @@ import static com.google.common.truth.Truth.*;
 class playingCardTest {
     playingCard deck[];
 
-    @BeforeAll
+    @BeforeEach
+    void setDeck(){
+        deck =  playingCard.createDeck();
+    }
+
+
     @Test
     void testCreatedeck(){
         deck = playingCard.createDeck();
@@ -21,10 +26,6 @@ class playingCardTest {
         }
     }
 
-    @BeforeEach
-    void setDeck(){
-        deck =  playingCard.createDeck();
-    }
 
     @Test
     void testFlip(){
