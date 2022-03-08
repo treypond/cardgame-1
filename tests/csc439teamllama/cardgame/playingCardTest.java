@@ -37,7 +37,7 @@ class playingCardTest {
 
     @org.junit.jupiter.api.Test
     void getFacing() {
-
+        //playingCard(playingCard.Facing facing, playingCard.Suit suit, playingCard.Number number)
     }
 
     @org.junit.jupiter.api.Test
