@@ -2,6 +2,7 @@ package csc439teamllama.cardgame;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author Isaac Sims
  * @version 1.0
  */
+
 public class playingCard {
     private Facing facing;
     private Suit suit;
@@ -26,6 +28,12 @@ public class playingCard {
         this.facing = facing;
         this.suit = suit;
         this.number = number;
+    }
+
+    public playingCard(boolean facing, int suit, int number) {
+        this.facing = Facing.faceBoolOf(facing);
+        this.suit = Suit.suitNumOf(suit);
+        this.number = Number.numOf(number);
     }
 
     public Facing getFacing() {
@@ -52,6 +60,34 @@ public class playingCard {
         this.number = number;
     }
 
+    //  put is black, is red here
+    public boolean isBlack(){
+        return false;
+    }
+
+    public boolean isRed(){
+        return false;
+    }
+
+    //  random card method
+    public playingCard randomCard(){
+        Random rand = new Random(1);
+        int wild = rand.nextInt(3)+1;
+        if(true){
+            wild = rand.nextInt(12)+1;
+        }
+        return new playingCard(false,1,1);
+    }
+
+    public playingCard randomCard(int seed){
+        Random rand = new Random(seed);
+        int wild = rand.nextInt(3)+1;
+        if(true){
+            wild = rand.nextInt(12)+1;
+        }
+        return new playingCard(false,1,1);
+    }
+
     /**
      * Turns over the playing card
      * <P>
@@ -66,11 +102,12 @@ public class playingCard {
     }
 
     /**
-     * A method to generate a playing card deck with 52 cards
+     * A method to generate a playing card deck with 52 cards in new deck order
      * <P>
      *     creates a playing card deck with all possible unique combinations of suites and numbers, face down. Does so by
      *     making extensive use of of the enum value maps created in our enum classes, further explained in the
-     *     enum documentation.
+     *     enum documentation. New deck order is suits in order Spades, Diamonds, Clubs, Hearts, with each in Ace-King
+     *     order.
      * </P>
      * CSC-439
      * @author Isaac Sims
@@ -79,9 +116,11 @@ public class playingCard {
      */
     public static playingCard[] createDeck(){
         playingCard deck[] = new playingCard[52];
+        //  outer loop for iterating through suits spades-hearts
         for(int i = 0; i<4 ;i++){
+            //  inner loop for iterating through numbers, ace-king
             for (int j = 0; j<13 ;j++){
-                deck[((i*13)+j)] = new playingCard(Facing.faceBoolOf(false),Suit.suitNumOf(i+1),Number.numOf(j+1));
+                deck[((i*13)+j)] = new playingCard(false,i+1,j+1);
             }
         }
         return deck;
@@ -97,6 +136,7 @@ public class playingCard {
      * @version 1.0
      */
     public enum Facing{
+        //  Down is false as it is unreadble, as in the face is not viewable, so logically face would be false
         DOWN(false),UP(true);
 
         private final boolean faceBool;
@@ -154,8 +194,8 @@ public class playingCard {
         private final int suitNum;
         private final static Map map = new HashMap();
 
-        Suit(int suitBool){
-            this.suitNum = suitBool;
+        Suit(int suitNum){
+            this.suitNum = suitNum;
         }
 
         /**
@@ -203,6 +243,7 @@ public class playingCard {
      * @version 1.0
      */
     public enum Number{
+
         ACE(1),TWO(2),THREE(3),FOUR(4),FIVE(5),SIX(6),SEVEN(7),
         EIGHT(8),NINE(9),TEN(10),JACK(11),QUEEN(12),KING(13);
 
