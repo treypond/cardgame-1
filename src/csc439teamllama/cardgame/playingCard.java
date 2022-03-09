@@ -24,6 +24,11 @@ public class playingCard {
     private Suit suit;
     private Number number;
 
+    public playingCard(){
+
+    }
+
+
     public playingCard(Facing facing, Suit suit, Number number) {
         this.facing = facing;
         this.suit = suit;
@@ -36,12 +41,30 @@ public class playingCard {
         this.number = Number.numOf(number);
     }
 
+//    @Override
+//    public boolean equals(playingCard obj) {
+//        if (getSuit().equals(obj.getSuit())){
+//            if(getFacing().equals(obj.getFacing())){
+//                if(getNumber().equals(obj.getNumber())){
+//                    return false;
+//                }
+//
+//            }
+//        }
+//        return false;
+//    }
+
     public Facing getFacing() {
         return facing;
     }
 
     public void setFacing(Facing facing) {
         this.facing = facing;
+    }
+
+    //  overloaded for boolean enum conversion
+    public void setFacing(Boolean facing) {
+        this.facing = Facing.faceBoolOf(facing);
     }
 
     public Suit getSuit() {
@@ -52,6 +75,11 @@ public class playingCard {
         this.suit = suit;
     }
 
+    //  overloaded for int enum conversion
+    public void setSuit(int suit) {
+        this.suit = Suit.suitNumOf(suit);
+    }
+
     public Number getNumber() {
         return number;
     }
@@ -60,33 +88,69 @@ public class playingCard {
         this.number = number;
     }
 
+    //  overloaded for int enum conversion
+    public void setNumber(int number) {
+        this.number = Number.numOf(number);
+    }
+
+
     //  put is black, is red here
+
+    public String toString(){
+        if(getFacing() == Facing.DOWN){
+            return "card is down";
+        }
+        else{
+            return getSuit() + "," + getNumber();
+        }
+    }
+
+
     public boolean isBlack(){
-        return false;
+        switch (getSuit()){
+            case CLUBS, SPADES:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public boolean isRed(){
-        return false;
+        switch (getSuit()){
+            case HEARTS, DIAMONDS:
+                return true;
+            default:
+                return false;
+        }
     }
 
     //  random card method
+
+    /**
+     * Generate a random card
+     * <p>
+     * Generate a random card by create a blank card and randomly setting the suit, number and facing
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public playingCard randomCard(){
-        Random rand = new Random(1);
-        int wild = rand.nextInt(3)+1;
-        if(true){
-            wild = rand.nextInt(12)+1;
+        playingCard playingCard = new playingCard();
+        int number = (int) ((Math.random() * (2 - 1)) + 1);
+        if(number == 1){
+            playingCard.setFacing(Boolean.TRUE);
         }
-        return new playingCard(false,1,1);
+        else{
+            playingCard.setFacing(Boolean.FALSE);
+        }
+        playingCard.setSuit(Suit.suitNumOf((int) ((Math.random() * (4 - 1)) + 1)));
+        playingCard.setNumber(Number.numOf((int) ((Math.random() * (4 - 1)) + 1)));
+
+        return playingCard;
     }
 
-    public playingCard randomCard(int seed){
-        Random rand = new Random(seed);
-        int wild = rand.nextInt(3)+1;
-        if(true){
-            wild = rand.nextInt(12)+1;
-        }
-        return new playingCard(false,1,1);
-    }
+
+
 
     /**
      * Turns over the playing card
@@ -283,4 +347,6 @@ public class playingCard {
             return cardNum;
         }
     }
+
+
 }
