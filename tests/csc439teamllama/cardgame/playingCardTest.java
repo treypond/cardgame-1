@@ -272,7 +272,7 @@ class playingCardTest {
         assertThat(tester).isEqualTo("Card is face down.");
 
         deck = playingCard.createDeck();
-        deck[42].flipCard(); .
+        deck[42].flipCard();
         deck[28].flipCard();
 
         tester = deck[42].toString();
