@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static com.google.common.truth.Truth.*;
 
 class playingCardTest {
@@ -56,7 +54,6 @@ class playingCardTest {
         //playingCard(playingCard.Facing facing, playingCard.Suit suit, playingCard.Number number)
 
         assertThat(deck[0].getFacing()).isEqualTo(playingCard.Facing.DOWN);
-
     }
 
     @Test
@@ -199,29 +196,6 @@ class playingCardTest {
         };
         assertThat(capture).isEqualTo("Non-Ace case");
     }
-<<<<<<< HEAD
-
-
-    //Put Tedla's tests after this point:
-    @Test
-    void randomCard() {
-        playingCard random = new playingCard().randomCard();
-        // TODO: Needs a test
-    }
-
-    @Test
-    void isBlack(){
-        playingCard card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.SPADES, playingCard.Number.ACE);
-        assertThat(card.isBlack()).isTrue();
-    }
-
-    @Test
-    void isRed(){
-        playingCard card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.HEARTS, playingCard.Number.ACE);
-        assertThat(card.isRed()).isTrue();
-    }
-=======
->>>>>>> 177593f241a8689221c2629d9b74384330adaf76
 
     //Put Tedla's tests after this point:
     @Test
@@ -298,7 +272,7 @@ class playingCardTest {
         assertThat(tester).isEqualTo("Card is face down.");
 
         deck = playingCard.createDeck();
-        deck[42].flipCard();
+        deck[42].flipCard(); .
         deck[28].flipCard();
 
         tester = deck[42].toString();

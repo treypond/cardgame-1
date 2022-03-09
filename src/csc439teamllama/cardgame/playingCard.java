@@ -24,11 +24,6 @@ public class playingCard {
     private Suit suit;
     private Number number;
 
-    public playingCard(){
-
-    }
-
-
     public playingCard(Facing facing, Suit suit, Number number) {
         this.facing = facing;
         this.suit = suit;
@@ -41,23 +36,8 @@ public class playingCard {
         this.number = Number.numOf(number);
     }
 
-<<<<<<< HEAD
-//    @Override
-//    public boolean equals(playingCard obj) {
-//        if (getSuit().equals(obj.getSuit())){
-//            if(getFacing().equals(obj.getFacing())){
-//                if(getNumber().equals(obj.getNumber())){
-//                    return false;
-//                }
-//
-//            }
-//        }
-//        return false;
-//    }
-=======
     // blank card creator
     public playingCard(){}
->>>>>>> 177593f241a8689221c2629d9b74384330adaf76
 
     public Facing getFacing() {
         return facing;
@@ -99,27 +79,16 @@ public class playingCard {
     }
 
 
-    //  put is black, is red here
-<<<<<<< HEAD
 
-    public String toString(){
-        if(getFacing() == Facing.DOWN){
-            return "card is down";
-        }
-        else{
-            return getSuit() + "," + getNumber();
-        }
-    }
-
-
-    public boolean isBlack(){
-        switch (getSuit()){
-            case CLUBS, SPADES:
-                return true;
-            default:
-                return false;
-=======
-    // needs javadoc: Tedla
+    /**
+     * Create a string for playingcard
+     * <p>
+     *     If the face is down then the method would print Card is face down but if it is face up
+     *     it will print the Number and suit
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     @Override
     public String toString(){
         if(getFacing() == Facing.DOWN){
@@ -127,11 +96,19 @@ public class playingCard {
         }
         else{
             return getSuit().toString().toLowerCase() + "," + getNumber().toString().toLowerCase();
->>>>>>> 177593f241a8689221c2629d9b74384330adaf76
         }
     }
 
-    //  needs java docs: Tedla
+
+
+    /**
+     * Check if Black
+     * <p>
+     *     if the suit is spade or club then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isBlack(){
         switch (getSuit()){
             case CLUBS, SPADES:
@@ -141,7 +118,15 @@ public class playingCard {
         }
     }
 
-    //  needs java docs: Tedla
+
+    /**
+     * Check if Red
+     * <p>
+     *     if the suit is heart or diamond then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isRed(){
         switch (getSuit()){
             case HEARTS, DIAMONDS:
@@ -150,36 +135,6 @@ public class playingCard {
                 return false;
         }
     }
-
-    //  random card method
-<<<<<<< HEAD
-
-    /**
-     * Generate a random card
-     * <p>
-     * Generate a random card by create a blank card and randomly setting the suit, number and facing
-     * </p>
-     * @author Tedla Tafari
-     * @version 1.0
-     */
-    public playingCard randomCard(){
-        playingCard playingCard = new playingCard();
-        int number = (int) ((Math.random() * (2 - 1)) + 1);
-        if(number == 1){
-            playingCard.setFacing(Boolean.TRUE);
-        }
-        else{
-            playingCard.setFacing(Boolean.FALSE);
-        }
-        playingCard.setSuit(Suit.suitNumOf((int) ((Math.random() * (4 - 1)) + 1)));
-        playingCard.setNumber(Number.numOf((int) ((Math.random() * (4 - 1)) + 1)));
-
-        return playingCard;
-    }
-
-
-
-=======
 
     /**
      * Generate a random card
@@ -198,7 +153,6 @@ public class playingCard {
         playingCard.setNumber((rand.nextInt(13)+1));
         return playingCard;
     }
->>>>>>> 177593f241a8689221c2629d9b74384330adaf76
 
     /**
      * Turns over the playing card
@@ -395,6 +349,4 @@ public class playingCard {
             return cardNum;
         }
     }
-
-
 }
