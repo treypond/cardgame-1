@@ -44,10 +44,6 @@ public class playingCard {
         this.facing = facing;
     }
 
-    public void setFacing(Boolean facing) {
-        this.facing = Facing.faceBoolOf(facing);
-    }
-
     public Suit getSuit() {
         return suit;
     }
@@ -56,20 +52,12 @@ public class playingCard {
         this.suit = suit;
     }
 
-    public void setSuit(int suit) {
-        this.suit = Suit.suitNumOf(suit);
-    }
-
     public Number getNumber() {
         return number;
     }
 
     public void setNumber(Number number) {
         this.number = number;
-    }
-
-    public void setNumber(int number) {
-        this.number = Number.numOf(number);
     }
 
     //  put is black, is red here
