@@ -36,6 +36,9 @@ public class playingCard {
         this.number = Number.numOf(number);
     }
 
+    // blank card creator
+    public playingCard(){}
+
     public Facing getFacing() {
         return facing;
     }
@@ -76,31 +79,55 @@ public class playingCard {
     }
 
     //  put is black, is red here
-    public boolean isBlack(){
-        return false;
+    // needs javadoc: Tedla
+    @Override
+    public String toString(){
+        if(getFacing() == Facing.DOWN){
+            return "Card is face down.";
+        }
+        else{
+            return getSuit().toString().toLowerCase() + "," + getNumber().toString().toLowerCase();
+        }
     }
 
+    //  needs java docs: Tedla
+    public boolean isBlack(){
+        switch (getSuit()){
+            case CLUBS, SPADES:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    //  needs java docs: Tedla
     public boolean isRed(){
-        return false;
+        switch (getSuit()){
+            case HEARTS, DIAMONDS:
+                return true;
+            default:
+                return false;
+        }
     }
 
     //  random card method
-    public playingCard randomCard(){
-        Random rand = new Random(1);
-        int wild = rand.nextInt(3)+1;
-        if(true){
-            wild = rand.nextInt(12)+1;
-        }
-        return new playingCard(false,1,1);
-    }
 
-    public playingCard randomCard(int seed){
-        Random rand = new Random(seed);
-        int wild = rand.nextInt(3)+1;
-        if(true){
-            wild = rand.nextInt(12)+1;
-        }
-        return new playingCard(false,1,1);
+    /**
+     * Generate a random card
+     * <p>
+     * Generate a random card by create a blank card and randomly setting the suit, number and facing
+     * </p>
+     * CSC-439
+     * @author Tedla Tafari
+     * @version 1.5
+     */
+    public static playingCard randomCard(){
+        playingCard playingCard = new playingCard();
+        Random rand = new Random();
+        playingCard.setFacing(rand.nextBoolean());
+        playingCard.setSuit((rand.nextInt(4)+1));
+        playingCard.setNumber((rand.nextInt(13)+1));
+        return playingCard;
     }
 
     /**
