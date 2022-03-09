@@ -44,6 +44,7 @@ public class playingCard {
         this.facing = facing;
     }
 
+    //  overloaded for int enum conversion
     public void setFacing(Boolean facing) {
         this.facing = Facing.faceBoolOf(facing);
     }
@@ -56,6 +57,7 @@ public class playingCard {
         this.suit = suit;
     }
 
+    //  overloaded for int enum conversion
     public void setSuit(int suit) {
         this.suit = Suit.suitNumOf(suit);
     }
@@ -68,6 +70,7 @@ public class playingCard {
         this.number = number;
     }
 
+    //  overloaded for int enum conversion
     public void setNumber(int number) {
         this.number = Number.numOf(number);
     }
