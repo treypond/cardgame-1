@@ -1,5 +1,6 @@
 package csc439teamllama.cardgame;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,9 +73,9 @@ class playingCardTest {
         deck[8] = new playingCard(playingCard.Facing.UP,deck[8].getSuit(),deck[8].getNumber());
 
         assertThat(deck[51].getFacing()).isEqualTo(playingCard.Facing.DOWN);
-        deck[51].setFacing(playingCard.Facing.UP);
+        deck[51].setFacing(true);
         assertThat(deck[51].getFacing()).isEqualTo(playingCard.Facing.UP);
-        deck[8].setFacing(playingCard.Facing.DOWN);
+        deck[8].setFacing(false);
         assertThat(deck[8].getFacing()).isEqualTo(playingCard.Facing.DOWN);
     }
 
@@ -187,26 +188,18 @@ class playingCardTest {
     //  For clarification on default switch behavior
     @Test
     void testSwitchFunctionality() {
-        String capture = "";
-        switch (deck[0].getNumber()) {
-            case ACE:
-                capture = "We have ace!";
-                break;
-            default:
-                capture = "Non-Ace case";
-                break;
-        }
+        String capture = switch (deck[0].getNumber()) {
+            case ACE -> "We have ace!";
+            default -> "Non-Ace case";
+        };
         assertThat(capture).isEqualTo("We have ace!");
-        switch (deck[1].getNumber()) {
-            case ACE:
-                capture = "We have ace!";
-                break;
-            default:
-                capture = "Non-Ace case";
-                break;
-        }
+        capture = switch (deck[1].getNumber()) {
+            case ACE -> "We have ace!";
+            default -> "Non-Ace case";
+        };
         assertThat(capture).isEqualTo("Non-Ace case");
     }
+<<<<<<< HEAD
 
 
     //Put Tedla's tests after this point:
@@ -227,5 +220,124 @@ class playingCardTest {
         playingCard card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.HEARTS, playingCard.Number.ACE);
         assertThat(card.isRed()).isTrue();
     }
+=======
+>>>>>>> 177593f241a8689221c2629d9b74384330adaf76
 
+    //Put Tedla's tests after this point:
+    @Test
+    void randomCard() {
+        int faceDownCount,faceUpCount,spadeCount,heartCount,aceCount,twoCount,kingCount;
+        faceDownCount = faceUpCount = spadeCount = heartCount = aceCount = twoCount = kingCount = 0;
+        System.out.println(faceDownCount +" "+ faceUpCount +" "+ spadeCount +" "+ heartCount +" "+ aceCount +" "+  twoCount +" "+  kingCount +" ");
+        deck = new playingCard[1000];
+        for (playingCard card : deck){
+            card = playingCard.randomCard();
+            switch (card.getFacing()){
+                case DOWN -> faceDownCount++;
+                case UP -> faceUpCount++;
+            }
+            switch (card.getSuit()){
+                case SPADES -> spadeCount++;
+                case HEARTS -> heartCount++;
+            }
+            switch (card.getNumber()){
+                case ACE -> aceCount++;
+                case TWO -> twoCount++;
+                case KING -> kingCount++;
+            }
+        }
+        //  test numberes for a 3% margin of error
+        System.out.println(faceDownCount +" "+ faceUpCount +" "+ spadeCount +" "+ heartCount +" "+ aceCount +" "+  twoCount +" "+  kingCount +" ");
+        Assertions.assertEquals(faceDownCount,500,30);
+        Assertions.assertEquals(faceUpCount,500,30);
+        Assertions.assertEquals(spadeCount,250,30);
+        Assertions.assertEquals(heartCount,250,30);
+        Assertions.assertEquals(heartCount,250,30);
+        Assertions.assertEquals(aceCount,76.9230769231,30);
+        Assertions.assertEquals(twoCount,76.9230769231,30);
+        Assertions.assertEquals(kingCount,76.9230769231,30);
+    }
+
+    @Test
+    void testIsBlack(){
+        playingCard card = new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.THREE);
+        assertThat(card.isBlack()).isTrue();
+        card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.DIAMONDS, playingCard.Number.KING);
+        assertThat(card.isBlack()).isFalse();
+        card = new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.EIGHT);
+        assertThat(card.isBlack()).isTrue();
+        card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.HEARTS, playingCard.Number.NINE);
+        assertThat(card.isBlack()).isFalse();
+    }
+
+    @Test
+    void testIsRed(){
+        playingCard card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.HEARTS, playingCard.Number.ACE);
+        assertThat(card.isRed()).isTrue();
+        card = new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.FOUR);
+        assertThat(card.isRed()).isFalse();
+        card = new playingCard(playingCard.Facing.DOWN, playingCard.Suit.DIAMONDS, playingCard.Number.TWO);
+        assertThat(card.isRed()).isTrue();
+        card = new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.TEN);
+        assertThat(card.isRed()).isFalse();
+    }
+
+    @Test
+    void testDefaultConstructor(){
+        deck[0]= new playingCard();
+        assertThat(deck[0].getSuit()).isNull();
+        assertThat(deck[0].getFacing()).isNull();
+        assertThat(deck[0].getNumber()).isNull();
+    }
+
+    @Test
+    void testToString() {
+        String tester = deck[42].toString();
+        assertThat(tester).isEqualTo("Card is face down.");
+        tester = deck[28].toString();
+        assertThat(tester).isEqualTo("Card is face down.");
+
+        deck = playingCard.createDeck();
+        deck[42].flipCard();
+        deck[28].flipCard();
+
+        tester = deck[42].toString();
+        assertThat(tester).isEqualTo("hearts,four");
+        tester = deck[28].toString();
+        assertThat(tester).isEqualTo("clubs,three");
+    }
+
+    @Test
+    void testGetSuitNum(){
+        playingCard numTestCard = new playingCard(playingCard.Facing.DOWN,playingCard.Suit.suitNumOf(4), playingCard.Number.JACK);
+        assertThat(numTestCard.getSuit().getSuitNum()).isEqualTo(4);
+
+        numTestCard = new playingCard(playingCard.Facing.DOWN,playingCard.Suit.suitNumOf(3), playingCard.Number.KING);
+        assertThat(numTestCard.getSuit().getSuitNum()).isEqualTo(3);
+
+        numTestCard = new playingCard(playingCard.Facing.UP,playingCard.Suit.suitNumOf(2), playingCard.Number.ACE);
+        assertThat(numTestCard.getSuit().getSuitNum()).isEqualTo(2);
+
+        numTestCard = new playingCard(playingCard.Facing.UP,playingCard.Suit.suitNumOf(1), playingCard.Number.SIX);
+        assertThat(numTestCard.getSuit().getSuitNum()).isEqualTo(1);
+    }
+
+    @Test
+    void testGetFaceBool(){
+        deck[2].flipCard();
+        assertThat(deck[51].getFacing().getFaceBool()).isEqualTo(false);
+        assertThat(deck[2].getFacing().getFaceBool()).isEqualTo(true);
+    }
+
+    @Test
+    void testGetNumberNum(){
+        playingCard numTestCard = new playingCard(playingCard.Facing.DOWN,playingCard.Suit.HEARTS, playingCard.Number.numOf(11));
+        assertThat(numTestCard.getNumber().getNum()).isEqualTo(11);
+
+        numTestCard = new playingCard(playingCard.Facing.UP,playingCard.Suit.CLUBS, playingCard.Number.numOf(10));
+        assertThat(numTestCard.getNumber().getNum()).isEqualTo(10);
+
+        numTestCard = new playingCard(playingCard.Facing.DOWN,playingCard.Suit.SPADES, playingCard.Number.numOf(5));
+        assertThat(numTestCard.getNumber().getNum()).isEqualTo(5);
+    }
 }
