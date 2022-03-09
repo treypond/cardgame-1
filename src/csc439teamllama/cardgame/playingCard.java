@@ -44,7 +44,7 @@ public class playingCard {
         this.facing = facing;
     }
 
-    //  overloaded for boolean enum conversion
+    //  overloaded for int enum conversion
     public void setFacing(Boolean facing) {
         this.facing = Facing.faceBoolOf(facing);
     }
