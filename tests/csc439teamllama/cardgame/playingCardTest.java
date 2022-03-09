@@ -4,8 +4,6 @@ package csc439teamllama.cardgame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.IntStream;
-
 import static com.google.common.truth.Truth.*;
 
 class playingCardTest {
