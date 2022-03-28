@@ -78,8 +78,17 @@ public class playingCard {
         this.number = Number.numOf(number);
     }
 
-    //  put is black, is red here
-    // needs javadoc: Tedla
+
+
+    /**
+     * Create a string for playingcard
+     * <p>
+     *     If the face is down then the method would print Card is face down but if it is face up
+     *     it will print the Number and suit
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     @Override
     public String toString(){
         if(getFacing() == Facing.DOWN){
@@ -90,7 +99,16 @@ public class playingCard {
         }
     }
 
-    //  needs java docs: Tedla
+
+
+    /**
+     * Check if Black
+     * <p>
+     *     if the suit is spade or club then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isBlack(){
         switch (getSuit()){
             case CLUBS, SPADES:
@@ -100,7 +118,15 @@ public class playingCard {
         }
     }
 
-    //  needs java docs: Tedla
+
+    /**
+     * Check if Red
+     * <p>
+     *     if the suit is heart or diamond then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isRed(){
         switch (getSuit()){
             case HEARTS, DIAMONDS:
@@ -109,8 +135,6 @@ public class playingCard {
                 return false;
         }
     }
-
-    //  random card method
 
     /**
      * Generate a random card
