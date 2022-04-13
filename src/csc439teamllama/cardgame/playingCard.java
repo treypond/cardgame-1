@@ -78,8 +78,17 @@ public class playingCard {
         this.number = Number.numOf(number);
     }
 
-    //  put is black, is red here
-    // needs javadoc: Tedla
+
+
+    /**
+     * Create a string for playingcard
+     * <p>
+     *     If the face is down then the method would print Card is face down but if it is face up
+     *     it will print the Number and suit
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     @Override
     public String toString(){
         if(getFacing() == Facing.DOWN){
@@ -90,7 +99,16 @@ public class playingCard {
         }
     }
 
-    //  needs java docs: Tedla
+
+
+    /**
+     * Check if Black
+     * <p>
+     *     if the suit is spade or club then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isBlack(){
         switch (getSuit()){
             case CLUBS, SPADES:
@@ -100,7 +118,15 @@ public class playingCard {
         }
     }
 
-    //  needs java docs: Tedla
+
+    /**
+     * Check if Red
+     * <p>
+     *     if the suit is heart or diamond then return true else return false
+     * </p>
+     * @author Tedla Tafari
+     * @version 1.0
+     */
     public boolean isRed(){
         switch (getSuit()){
             case HEARTS, DIAMONDS:
@@ -109,8 +135,6 @@ public class playingCard {
                 return false;
         }
     }
-
-    //  random card method
 
     /**
      * Generate a random card
@@ -157,7 +181,7 @@ public class playingCard {
      * @return A deck of 52 playing cards
      */
     public static playingCard[] createDeck(){
-        playingCard deck[] = new playingCard[52];
+        playingCard[] deck = new playingCard[52];
         //  outer loop for iterating through suits spades-hearts
         for(int i = 0; i<4 ;i++){
             //  inner loop for iterating through numbers, ace-king
@@ -182,7 +206,7 @@ public class playingCard {
         DOWN(false),UP(true);
 
         private final boolean faceBool;
-        private final static Map map = new HashMap();
+        private final static HashMap<Boolean, Facing> map = new HashMap<>();
 
         Facing(boolean faceBool){
             this.faceBool = faceBool;
@@ -210,7 +234,7 @@ public class playingCard {
          * @version 1.0
          */
         public static Facing faceBoolOf(boolean bool) {
-            return (Facing) map.get(bool);
+            return map.get(bool);
         }
 
         public boolean getFaceBool() {
@@ -234,7 +258,7 @@ public class playingCard {
         SPADES(1),DIAMONDS(2),CLUBS(3),HEARTS(4);
 
         private final int suitNum;
-        private final static Map map = new HashMap();
+        private final static Map<Integer, Suit> map = new HashMap<>();
 
         Suit(int suitNum){
             this.suitNum = suitNum;
@@ -262,7 +286,7 @@ public class playingCard {
          * @version 1.0
          */
         public static Suit suitNumOf(int num) {
-            return (Suit) map.get(num);
+            return map.get(num);
         }
 
         public int getSuitNum() {
@@ -290,7 +314,7 @@ public class playingCard {
         EIGHT(8),NINE(9),TEN(10),JACK(11),QUEEN(12),KING(13);
 
         private final int cardNum;
-        private final static Map map = new HashMap();
+        private final static Map<Integer, Number> map = new HashMap<>();
 
         Number(int cardNum){
             this.cardNum = cardNum;
@@ -318,7 +342,7 @@ public class playingCard {
          * @version 1.0
          */
         public static Number numOf(int num) {
-            return (Number) map.get(num);
+            return map.get(num);
         }
 
         public int getNum() {
