@@ -10,7 +10,7 @@ public abstract class GolfView {
 
 //  4 As a player, on each turn, I would like the game to display who’s turn it is, their hand, the
 //  draw pile and last discarded card
-    abstract protected void DisplayGameState();
+    abstract protected void DisplayGameState(GolfGameModel game);
 
 //    4 list of actions they may take, so it is clear I
 //    know what I am doing (include choice to redisplay the game state)
@@ -20,7 +20,7 @@ public abstract class GolfView {
 
 //    8 As a player, I should be able to quit the game with a command on each turn, so that
 //    the game doesn’t get into an infinite loop
-    abstract protected String PromptDecision();
+    abstract protected int PromptDecision();
 
 //  5 be shown the card, and then allowed to select what card to replace, so that I can take
 //  my turn

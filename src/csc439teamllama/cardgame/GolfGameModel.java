@@ -21,12 +21,12 @@ public class GolfGameModel {
         }
         discard = new ArrayList<>();
         gameOver = false;
-        int turn = 1;
+        turn = 1;
         players = new GolfPlayerModel[playerNum];
     }
 
 //  gets the player number fro turn from round
-    public int GetCurrentPlayerIndex(){
+    public int PlayerIndex(){
         return ((turn-1)%(players.length));
     }
 }

@@ -37,7 +37,7 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game:  "+
+                        "How many players for this game: "+
                         "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
                         " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
@@ -48,7 +48,7 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game:  "
+                        "How many players for this game: "
         );
     }
 }
