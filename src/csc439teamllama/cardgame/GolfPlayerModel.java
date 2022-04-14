@@ -1,11 +1,9 @@
 package csc439teamllama.cardgame;
 
-import java.util.ArrayList;
-
 public class GolfPlayerModel {
-    ArrayList<playingCard> hand;
+    playingCard[] hand;
 
     public GolfPlayerModel(){
-        hand = new ArrayList<>();
+        hand = new playingCard[6];
     }
 }
