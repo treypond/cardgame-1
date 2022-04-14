@@ -14,9 +14,18 @@ class GolfControllerTest {
         GolfController controllerTest = new GolfController(new GolfCLITestView());
         Collections.addAll(((GolfCLITestView)controllerTest.view).input, "10","2");
         controllerTest.GameStart();
-        assertThat(        controllerTest.game.deck.size()).isEqualTo(104);
+        assertThat(controllerTest.game.deck.size()).isEqualTo(44);
+        assertThat(controllerTest.game.players[0].hand[0].getFacing()).isEqualTo(playingCard.Facing.UP);
+        assertThat(controllerTest.game.players[3].hand[1].getFacing()).isEqualTo(playingCard.Facing.UP);
+        assertThat(controllerTest.game.players[5].hand[5].getFacing()).isEqualTo(playingCard.Facing.DOWN);
+        assertThat(controllerTest.game.players[0].hand[0].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
+        assertThat(controllerTest.game.players[0].hand[0].getNumber()).isEqualTo(playingCard.Number.KING);
+        assertThat(controllerTest.game.players[6].hand[4].getSuit()).isEqualTo(playingCard.Suit.SPADES);
+        assertThat(controllerTest.game.players[6].hand[4].getNumber()).isEqualTo(playingCard.Number.QUEEN);
+        assertThat(controllerTest.game.players[9].hand[3].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
+        assertThat(controllerTest.game.players[9].hand[3].getNumber()).isEqualTo(playingCard.Number.EIGHT);
         controllerTest.GameStart();
-        assertThat(        controllerTest.game.deck.size()).isEqualTo(52);
+        assertThat(controllerTest.game.deck.size()).isEqualTo(40);
         assertThat(((GolfCLITestView) controllerTest.view).output).isEqualTo(
                 "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +

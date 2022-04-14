@@ -21,6 +21,14 @@ public class GolfController {
 //        example of hand/deck access
         view.TitleScreen();
         game = new GolfGameModel(view.GameStartOptions());
+        for (int i = 0; i < game.players.length; i++) {
+            game.players[i] = new GolfPlayerModel();
+            for (int j = 0; j < 6; j++) {
+                game.players[i].hand[j] = game.deck.remove(game.deck.size()-1);
+            }
+            game.players[i].hand[0].flipCard();
+            game.players[i].hand[1].flipCard();
+        }
     }
 
 //  method with loop to continue game until completion, uses other method calls in controller
