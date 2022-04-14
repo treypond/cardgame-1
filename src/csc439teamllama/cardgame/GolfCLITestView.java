@@ -10,7 +10,7 @@ public class GolfCLITestView extends GolfView {
     @Override
     protected void TitleScreen() {
         output+=
-                "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
+                        "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
                         " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
                         " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
