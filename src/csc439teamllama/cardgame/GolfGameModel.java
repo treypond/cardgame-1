@@ -13,6 +13,11 @@ public class GolfGameModel {
 //  player size determines deck size, 52 card deck for 4 or less, double for 5 or more.
 //  create and fill player array based on player number, use game rules to disperse
 //  correct number of cards to hand.
+
+    /**
+     * Constructor for the game. It creates a game based on the number of player playing the game.
+     * @param playerNum
+     */
     public GolfGameModel(int playerNum) {
         deck = new ArrayList<>();
         Collections.addAll(deck,playingCard.createDeck());
@@ -26,6 +31,11 @@ public class GolfGameModel {
     }
 
 //  gets the player number for turn from round
+
+    /**
+     * Decides which players turn it is
+     * @return index of the player whose turn it is.
+     */
     public int PlayerIndex(){
         return ((turn-1)%(players.length));
     }

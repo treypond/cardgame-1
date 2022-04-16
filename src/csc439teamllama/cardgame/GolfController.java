@@ -6,6 +6,10 @@ public class GolfController {
     protected GolfGameModel game;
     protected GolfView view;
 
+    /**
+     * Constructor for the controller which handles the game logic
+     * @param view
+     */
     public GolfController(GolfView view){
         this.view = view;
     }
@@ -17,6 +21,10 @@ public class GolfController {
 //    3 when the game starts, it should deal all players in the game a six card hand,
 //    in two  rows of three, from the deck or shoe. Each hand should start with four face
 //    down cards and two random cards faced up.
+
+    /**
+     * Set up the game by create the correct number of deck and deals the hand to all the players. Then starts the game
+     */
     public void GameStart(){
 //        game.players[0].hand.add(game.deck.remove(game.deck.size()-1));
 //        game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
@@ -53,6 +61,10 @@ public class GolfController {
 
 //    7 As a player, when my turn is over, the game proceeds to the next player’s turn, so that
 //    the game  continues.
+
+    /**
+     * Check if the gameover and if it is not it continues to the next player turn
+     */
     protected void GameRunner(){
         while (!game.gameOver){
             Turn();
@@ -73,6 +85,12 @@ public class GolfController {
 //        As a player, if I draw the card on top of the discard pile, I shouldn’t be allowed to place
 //        that  card back in the discard pile, and should be forced to replace a card in my hand,
 //        so that I don’t  break the game’s rules unintentionally.
+
+    /**
+     * This method implements the action invloved in one players turn in a game of golf. It displays cards
+     * and actions allowed to be done by the player. During the player's turn the method prompts the user to discard a
+     * card from hand and take on from the deck or discard pile.Then indicated that the current player turn is over
+     */
     protected void Turn(){
         boolean turnOver = false;
         boolean discardOver = false;
