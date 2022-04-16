@@ -23,17 +23,30 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected int GameStartOptions() {
-        output += "How many players for this game: ";
-        return Integer.parseInt(input.remove(0));
+    protected int GameStartOptions()  throws InputMismatchException{
+        try{
+            output += "How many players for this game: ";
+            int option;
+            if(!input.isEmpty())
+            { option = Integer.parseInt(input.remove(0));}
+            else {
+                option = -1;
+            }
+            if( option < 1 && option != -1){
+                throw new InputMismatchException();
+            }
+            return option;
+        }
+        catch (NumberFormatException e){
+            throw new InputMismatchException();
+        }
     }
 
     @Override
     protected void DisplayGameState(GolfGameModel game) {
         int index = game.PlayerIndex()+1;
         output += "Player " + index + "\'s Turn\n";
-        output+= "1."+game.players[game.PlayerIndex()].hand[0].toString()+ " 2." + game.players[game.PlayerIndex()].hand[1].toString()+ " 3." + game.players[game.PlayerIndex()].hand[2].toString() + "\n";
-        output+= "4."+game.players[game.PlayerIndex()].hand[3].toString()+ " 5." + game.players[game.PlayerIndex()].hand[4].toString()+ " 6." + game.players[game.PlayerIndex()].hand[5].toString() + "\n";
+        DisplayHand(game);
         output+= "The deck has " + game.deck.size() + " remaining\n";
 
         if( game.discard.size() == 0){
@@ -46,13 +59,19 @@ public class GolfCLITestView extends GolfView {
 
     @Override
     protected int PromptDecision() throws InputMismatchException {
-        output += "1. Print Game State Again\n";
-        output += "2. Pick Up From Deck\n";
-        output += "3. Pick Up From Discard\n";
-        output += "Enter Number To Proceed: ";
         try{
-            int option =  Integer.parseInt(input.remove(0));
-            if(option > 3 || option < 1){
+            output += "1. Print Game State Again\n";
+            output += "2. Pick Up From Deck\n";
+            output += "3. Pick Up From Discard\n";
+            output += "Or Enter -1 To Exit\n";
+            output += "Enter Number To Proceed: ";
+            int option;
+            if(!input.isEmpty())
+            { option = Integer.parseInt(input.remove(0));}
+            else {
+                option = -1;
+            }
+            if(option > 3 || option < 1 && option != -1){
                 throw new InputMismatchException();
             }
             return option;
@@ -60,21 +79,48 @@ public class GolfCLITestView extends GolfView {
         catch (NumberFormatException e){
             throw new InputMismatchException();
         }
-
-
-
     }
 
     @Override
-    protected String PromptDiscard() {
-        return null;
+    protected int PromptDiscard(GolfGameModel game) throws InputMismatchException {
+        try{
+            output+=("Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
+                    "Enter 7 To Discard Chosen Card.\n");
+            output += "Or -1 To Exit\n";
+            DisplayHand(game);
+            output+= "Enter Number To Proceed: ";
+            int option;
+            if(!input.isEmpty())
+                { option = Integer.parseInt(input.remove(0));}
+            else {
+                option = -1;
+                game.gameOver = true;
+            }
+            if(option > 7 || option < 1 && option != -1) {
+                throw new InputMismatchException();
+            }
+            return option;
+        }
+        catch (NumberFormatException e){
+            throw new InputMismatchException();
+        }
     }
 
     @Override
-    protected void SendMessageToPlayer() {
-
+    protected void SendMessageToPlayer(String message) {
+        output+=message+"\n";
     }
 
+    @Override
+    protected void DisplayHand(GolfGameModel game) {
+        output+= "1."+game.players[game.PlayerIndex()].hand[0].toString()+ " 2." + game.players[game.PlayerIndex()].hand[1].toString()+ " 3." + game.players[game.PlayerIndex()].hand[2].toString() + "\n";
+        output+= "4."+game.players[game.PlayerIndex()].hand[3].toString()+ " 5." + game.players[game.PlayerIndex()].hand[4].toString()+ " 6." + game.players[game.PlayerIndex()].hand[5].toString() + "\n";
+    }
+
+    @Override
+    protected void ClearScanner() {
+        ;
+    }
 
     public void clearVars() {
         output = "";

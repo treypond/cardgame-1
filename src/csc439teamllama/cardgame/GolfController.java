@@ -1,5 +1,7 @@
 package csc439teamllama.cardgame;
 
+import java.util.InputMismatchException;
+
 public class GolfController {
     protected GolfGameModel game;
     protected GolfView view;
@@ -19,8 +21,23 @@ public class GolfController {
 //        game.players[0].hand.add(game.deck.remove(game.deck.size()-1));
 //        game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
 //        example of hand/deck access
+        boolean correctPlayer = false;
         view.TitleScreen();
-        game = new GolfGameModel(view.GameStartOptions());
+        do {
+            try {
+                int players = view.GameStartOptions();
+                if (players==-1){
+                    return;
+                }
+                game = new GolfGameModel(players);
+                correctPlayer = true;
+            }
+            catch (InputMismatchException e) {
+                view.SendMessageToPlayer("please input a number: greater than 0");
+                view.ClearScanner();
+            }
+        }
+        while (!correctPlayer);
         for (int i = 0; i < game.players.length; i++) {
             game.players[i] = new GolfPlayerModel();
             for (int j = 0; j < 6; j++) {
@@ -29,16 +46,17 @@ public class GolfController {
             game.players[i].hand[0].flipCard();
             game.players[i].hand[1].flipCard();
         }
+        GameRunner();
     }
 
 //  method with loop to continue game until completion, uses other method calls in controller
 
 //    7 As a player, when my turn is over, the game proceeds to the next player’s turn, so that
 //    the game  continues.
-    private void GameRunner(){
-//        while (!game.gameOver){
-//            return;
-//        }
+    protected void GameRunner(){
+        while (!game.gameOver){
+            Turn();
+        }
     }
 
 //    5 on each turn, I should be asked to draw a card from the draw pile or discard
@@ -55,7 +73,87 @@ public class GolfController {
 //        As a player, if I draw the card on top of the discard pile, I shouldn’t be allowed to place
 //        that  card back in the discard pile, and should be forced to replace a card in my hand,
 //        so that I don’t  break the game’s rules unintentionally.
-    private void Turn(){
-
+    protected void Turn(){
+        boolean turnOver = false;
+        boolean discardOver = false;
+        view.DisplayGameState(game);
+        while (!turnOver) {
+            try {
+                int drawResponse = view.PromptDecision();
+                    if (drawResponse == -1){
+                        game.gameOver = true;
+                        return;
+                    }
+                    else if (drawResponse == 1)
+                        view.DisplayGameState(game);
+                    else {
+                        playingCard drawnCard;
+                        String drawnFrom;
+                        if (drawResponse == 2) {
+                            if (game.deck.isEmpty()){
+                                view.SendMessageToPlayer("Deck Is Empty! Please Draw from Discard");
+                                continue;
+                            }
+                            else {
+                                game.deck.get(game.deck.size() - 1).flipCard();
+                                drawnCard = game.deck.get(game.deck.size() - 1);
+                                drawnFrom = "Deck";
+                            }
+                        }
+                        else {
+                            if (game.discard.isEmpty()){
+                                view.SendMessageToPlayer("Discard Is Empty! Please Draw from Deck");
+                                continue;
+                            }
+                            else {
+                                drawnCard = game.discard.get(game.discard.size() - 1);
+                                drawnFrom = "Discard";
+                            }
+                        }
+                        while (!discardOver) {
+                            try {
+                                view.SendMessageToPlayer("Drawn card: "+drawnCard.toString()+" From: "+drawnFrom);
+                                int discardResponse = view.PromptDiscard(game);
+                                if (discardResponse == -1){
+                                    game.gameOver = true;
+                                    return;
+                                }
+                                else if (discardResponse < 7) {
+                                    discardOver = true;
+                                    game.players[game.PlayerIndex()].hand[discardResponse-1].setFacing(playingCard.Facing.UP);
+                                    if (drawResponse == 2){
+                                        game.discard.add(game.players[game.PlayerIndex()].hand[discardResponse-1]);
+                                        game.players[game.PlayerIndex()].hand[discardResponse-1] = game.deck.remove(game.deck.size() - 1);
+                                    }
+                                    else{
+                                        playingCard temp = game.discard.remove(game.discard.size() - 1);
+                                        game.discard.add(game.players[game.PlayerIndex()].hand[discardResponse-1]);
+                                        game.players[game.PlayerIndex()].hand[discardResponse-1] = temp;
+                                    }
+                                }
+                                else {
+                                    if (drawResponse == 2) {
+                                        game.discard.add(game.deck.remove(game.deck.size() - 1));
+                                        discardOver = true;
+                                    }
+                                    else {
+                                        view.SendMessageToPlayer("You Picked This Card From Discard! Please Discard A Card From Your Hand.");
+                                    }
+                                }
+                            }
+                            catch (InputMismatchException e) {
+                                view.SendMessageToPlayer("please input a number between 1 and 7");
+                                view.ClearScanner();
+                            }
+                        }
+                    }
+                turnOver = true;
+                }
+            catch (InputMismatchException e){
+                view.SendMessageToPlayer("please input a number between 1 and 3");
+                view.ClearScanner();
+            }
+        }
+        game.turn++;
     }
 }

@@ -28,9 +28,12 @@ public abstract class GolfView {
 //  7 As a player, if I draw the card on top of the discard pile, I shouldn’t be allowed to place
 //  that  card back in the discard pile, and should be forced to replace a card in my hand,
 //  so that I don’t  break the game’s rules unintentionally
-    abstract protected String PromptDiscard();
-
+    abstract protected int PromptDiscard(GolfGameModel game);
 
 //  used as main way for controller to send arbitray cli messages to player
-    abstract protected void SendMessageToPlayer();
+    abstract protected void SendMessageToPlayer(String message);
+
+    abstract protected void DisplayHand(GolfGameModel game);
+
+    abstract protected void ClearScanner();
 }

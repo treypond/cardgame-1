@@ -25,7 +25,7 @@ public class GolfGameModel {
         players = new GolfPlayerModel[playerNum];
     }
 
-//  gets the player number fro turn from round
+//  gets the player number for turn from round
     public int PlayerIndex(){
         return ((turn-1)%(players.length));
     }
