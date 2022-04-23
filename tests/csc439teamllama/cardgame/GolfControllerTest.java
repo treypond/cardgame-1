@@ -79,7 +79,7 @@ class GolfControllerTest {
         GolfController controller = new GolfController(view);
         controller.GameStart();
         controller.game.turn = 1;
-        controller.game.gameOver = false;
+        controller.game.gameOver = true;
         controller.game.players[0].hand = new playingCard[]{new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.ACE),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
@@ -104,7 +104,12 @@ class GolfControllerTest {
                         "1.spades,ace 2.diamonds,king 3.clubs,two\n"+
                         "4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
                         "The deck has 28 remaining\n"+
-                        "The discard pile is empty\n"
+                        "The discard pile is empty\n"+
+                        "1. Print Game State Again\n"+
+                        "2. Pick Up From Deck\n"+
+                        "3. Pick Up From Discard\n"+
+                        "Or Enter -1 To Exit\n"+
+                        "Enter Number To Proceed: "
         );
     }
 
@@ -460,4 +465,26 @@ class GolfControllerTest {
         assertThat(controller.game.players[0].hand[5].toString()).isEqualTo("diamonds,three");
         assertThat(controller.game.players[1].hand[5].toString()).isEqualTo("hearts,eight");
     }
+
+    @Test
+    void TurnChangeTest(){
+        GolfCLITestView view = new GolfCLITestView();
+        Collections.addAll(view.input,"6","2","6","3","6","2","7");
+        GolfController controller = new GolfController(view);
+        controller.GameStart();
+        ((GolfCLITestView)view).output = "";
+        controller.view.DisplayGameState(controller.game);
+        assertThat(controller.game.turn).isEqualTo(4);
+        assertThat(controller.game.players[0].hand[5].toString()).isEqualTo("diamonds,three");
+        assertThat(controller.game.players[1].hand[5].toString()).isEqualTo("hearts,eight");
+        assertThat(controller.game.discard.get(controller.game.discard.size()-1).toString()).isEqualTo("diamonds,two");
+        assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
+                "Player 4's Turn\n"+
+                        "1.clubs,eight 2.clubs,seven 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "The deck has 66 remaining\n"+
+                        "The top card on the discard pile is diamonds,two\n"
+        );
+    }
+
 }
