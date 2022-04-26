@@ -98,9 +98,8 @@ class GolfControllerTest {
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
                         "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "
-
-                        +"Player 1's Turn\n"+
+                        "Enter Number To Proceed: "+
+                        "Player 1's Turn\n"+
                         "1.spades,ace 2.diamonds,king 3.clubs,two\n"+
                         "4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
                         "The deck has 28 remaining\n"+
@@ -472,7 +471,7 @@ class GolfControllerTest {
         Collections.addAll(view.input,"6","2","6","3","6","2","7");
         GolfController controller = new GolfController(view);
         controller.GameStart();
-        ((GolfCLITestView)view).output = "";
+        ((GolfCLITestView)controller.view).output = "";
         controller.view.DisplayGameState(controller.game);
         assertThat(controller.game.turn).isEqualTo(4);
         assertThat(controller.game.players[0].hand[5].toString()).isEqualTo("diamonds,three");
