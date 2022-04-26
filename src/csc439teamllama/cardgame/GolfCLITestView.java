@@ -27,8 +27,13 @@ public class GolfCLITestView extends GolfView {
         try{
             output += "How many players for this game: ";
             int option;
-            if(!input.isEmpty())
-            { option = Integer.parseInt(input.remove(0));}
+            if(!input.isEmpty()) {
+                if (input.get(0).equals("clear")){
+                    output = "";
+                    input.remove(0);
+                }
+                option = Integer.parseInt(input.remove(0));
+            }
             else {
                 option = -1;
             }
@@ -45,7 +50,7 @@ public class GolfCLITestView extends GolfView {
     @Override
     protected void DisplayGameState(GolfGameModel game) {
         int index = game.PlayerIndex()+1;
-        output += "Player " + index + "\'s Turn\n";
+        output += "Player " + index + "'s Turn\n";
         DisplayHand(game);
         output+= "The deck has " + game.deck.size() + " remaining\n";
 
@@ -66,8 +71,13 @@ public class GolfCLITestView extends GolfView {
             output += "Or Enter -1 To Exit\n";
             output += "Enter Number To Proceed: ";
             int option;
-            if(!input.isEmpty())
-            { option = Integer.parseInt(input.remove(0));}
+            if(!input.isEmpty()) {
+                if (input.get(0).equals("clear")){
+                    output = "";
+                    input.remove(0);
+                }
+                option = Integer.parseInt(input.remove(0));
+            }
             else {
                 option = -1;
             }
@@ -90,11 +100,15 @@ public class GolfCLITestView extends GolfView {
             DisplayHand(game);
             output+= "Enter Number To Proceed: ";
             int option;
-            if(!input.isEmpty())
-                { option = Integer.parseInt(input.remove(0));}
+            if(!input.isEmpty()) {
+                if (input.get(0).equals("clear")){
+                    output = "";
+                    input.remove(0);
+                }
+                option = Integer.parseInt(input.remove(0));
+            }
             else {
                 option = -1;
-                game.gameOver = true;
             }
             if(option > 7 || option < 1 && option != -1) {
                 throw new InputMismatchException();
@@ -119,10 +133,9 @@ public class GolfCLITestView extends GolfView {
 
     @Override
     protected void ClearScanner() {
-        ;
     }
 
-    public void clearVars() {
+    protected void clearVars() {
         output = "";
         input.clear();
     }
