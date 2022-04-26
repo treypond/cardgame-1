@@ -8,8 +8,7 @@ public class GolfGameModel {
     protected ArrayList<playingCard> deck,discard;
     protected GolfPlayerModel[] players;
     protected int turn;
-    protected boolean gameOver,turnOver,discardOver;
-
+    protected boolean gameOver;
 
 //  player size determines deck size, 52 card deck for 4 or less, double for 5 or more.
 //  create and fill player array based on player number, use game rules to disperse
