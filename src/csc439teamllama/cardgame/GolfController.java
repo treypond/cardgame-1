@@ -26,9 +26,9 @@ public class GolfController {
      * Set up the game by create the correct number of deck and deals the hand to all the players. Then starts the game
      */
     public void GameStart(){
-//        game.players[0].hand.add(game.deck.remove(game.deck.size()-1));
-//        game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
-//        example of hand/deck access
+//      ame.players[0].hand.add(game.deck.remove(game.deck.size()-1));
+//      game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
+//      example of hand/deck access
         boolean correctPlayer = false;
         view.TitleScreen();
         do {
@@ -57,7 +57,7 @@ public class GolfController {
         GameRunner();
     }
 
-//  method with loop to continue game until completion, uses other method calls in controller
+//    method with loop to continue game until completion, uses other method calls in controller
 
 //    7 As a player, when my turn is over, the game proceeds to the next player’s turn, so that
 //    the game  continues.
@@ -68,11 +68,12 @@ public class GolfController {
     protected void GameRunner(){
         while (!game.gameOver){
             Turn();
+            game.turnOver = false;
         }
     }
 
 //    5 on each turn, I should be asked to draw a card from the draw pile or discard
-//      --decison, instead of creating a separate variable to show selected card, just display info of
+//      --decision, instead of creating a separate variable to show selected card, just display info of
 //      card to player, so just redisplay top discard, and flip and show top of deck
 //    pile, be shown the card, and then allowed to select what card to replace, so that I can take
 //    my turn.
@@ -96,109 +97,7 @@ public class GolfController {
         //main turn loop, all loops in this method use try catch top enforce proper inputs for each prompt,
         //and the nested loops and try catches make it so that each error is handled appropriately
         //turn has ended so we increment turn counter
-        DrawPhase();
-        if (!game.gameOver)
-            game.turn++;
-    }
-
-    protected void DrawPhase(){
-         game.turnOver = false;
-        while (!game.turnOver) {
-            try {
-                //get user input from 1-3, or -1 to exit
-                int drawResponse = view.PromptDecision();
-                //-1 so we exit turn and end game
-                if (drawResponse == -1){
-                    game.gameOver = true;
-                    return;
-                }
-                //1 means we redisplay game state and return to being of loop to prompt user once again
-                else if (drawResponse == 1) {
-                    view.DisplayGameState(game);
-                    continue;
-                }
-                //we enter here because the user has either entered 2 or three, so we know they have chosen to draw,
-                //and we must handle it appropriately, including errors like drawing from empty piles.
-                else {
-                    playingCard drawnCard;
-                    String drawnFrom;
-                    //2 means we are drawing from deck, if it is empty we prompt user and inform them as such
-                    if (drawResponse == 2) {
-                        if (game.deck.isEmpty()){
-                            view.SendMessageToPlayer("Deck Is Empty! Please Draw from Discard");
-                            continue;
-                        }
-//                            if it is not empty it is allowed so we set our drawn card to the top of the deck
-                        else {
-                            game.deck.get(game.deck.size() - 1).flipCard();
-                            drawnCard = game.deck.remove(game.deck.size() - 1);
-                            drawnFrom = "Deck";
-                        }
-                    }
-                    //option 3, draw from discard, same logic as above except with discard
-                    else {
-                        if (game.discard.isEmpty()){
-                            view.SendMessageToPlayer("Discard Is Empty! Please Draw from Deck");
-                            continue;
-                        }
-                        else {
-                            drawnCard = game.discard.remove(game.discard.size() - 1);
-                            drawnFrom = "Discard";
-                        }
-                    }
-                    //now that we have legally chosen a drawn card we choose which card to discard and replace from our hand
-                    //and if we drew deck possibly discard our drawn card
-                    DiscardPhase(drawResponse,drawnFrom,drawnCard);
-                }
-                game.turnOver = true;
-            }
-            //catch for out of bounds response to prompt to start turn, clears error from scanner
-            catch (InputMismatchException e){
-                view.SendMessageToPlayer("please input a number between 1 and 3");
-                view.ClearScanner();
-            }
-        }
-    }
-
-    protected void DiscardPhase(int drawResponse, String drawnFrom,playingCard drawnCard){
-        game.discardOver = false;
-        while (!game.discardOver) {
-            try {
-                view.SendMessageToPlayer("Drawn card: "+drawnCard.toString()+" From: "+drawnFrom);
-                int discardResponse = view.PromptDiscard(game);
-                //exit code
-                if (discardResponse == -1){
-                    game.gameOver = true;
-                    return;
-                }
-                // this means we are discarding from player hand, this is legal no matter where we drew
-                //from
-                else if (discardResponse < 7) {
-                    game.discardOver = true;
-                    //set the discarded card from hand to face up
-                    game.players[game.PlayerIndex()].hand[discardResponse-1].setFacing(playingCard.Facing.UP);
-//                                    move the card from hand to discard and the popped drawn card to hand
-                    game.discard.add(game.players[game.PlayerIndex()].hand[discardResponse-1]);
-                    game.players[game.PlayerIndex()].hand[discardResponse-1] = drawnCard;
-                }
-                //this is the case where we discard drawn card, not legal if we drew from discard
-                else {
-                    //drawn from deck so legal
-                    if (drawResponse == 2) {
-                        game.discard.add(drawnCard);
-                        game.discardOver = true;
-                    }
-                    //drawn from discard, so we ask them to choose a card from their hand to discard
-                    else {
-                        view.SendMessageToPlayer("You Picked This Card From Discard! Please Discard A Card From Your Hand.");
-                    }
-                }
-            }
-            //catch for out of bounds response to prompt discard, clears error from scanner
-            catch (InputMismatchException e) {
-                view.SendMessageToPlayer("please input a number between 1 and 7");
-                view.ClearScanner();
-            }
-        }
+        while (!game.turnOver && !game.gameOver)
+            game.phase.execute(game,view);
     }
 }

@@ -79,7 +79,7 @@ class GolfControllerTest {
         GolfController controller = new GolfController(view);
         controller.GameStart();
         controller.game.turn = 1;
-        controller.game.gameOver = true;
+        controller.game.gameOver = false;
         controller.game.players[0].hand = new playingCard[]{new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.ACE),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
@@ -245,6 +245,8 @@ class GolfControllerTest {
         ((GolfCLITestView)controller.view).output = "";
         controller.game.discard = controller.game.deck;
         controller.game.deck.clear();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
         controller.Turn();
         assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
                 "Player 1's Turn\n"+
@@ -348,6 +350,8 @@ class GolfControllerTest {
         controller.GameStart();
         controller.game.turn = 1;
         ((GolfCLITestView)controller.view).output = "";
+        controller.game.gameOver =false;
+        controller.game.turnOver = false;
         controller.Turn();
         assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
                 "Player 1's Turn\n"+
@@ -454,11 +458,13 @@ class GolfControllerTest {
     }
 
     @Test
-    void DrawDiscardDiscardFromHand(){
+    void DrawDiscardPileDiscardFromHand(){
         GolfCLITestView view = new GolfCLITestView();
-        Collections.addAll(view.input,"6","2","6","3","6");
+        Collections.addAll(view.input,"6","2","6","3","6","-1");
         GolfController controller = new GolfController(view);
         controller.GameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
         controller.game.turn = 2;
         controller.view.DisplayHand(controller.game);
         assertThat(controller.game.discard.remove(0).toString()).isEqualTo("hearts,two");
