@@ -7,8 +7,12 @@ public class GolfGameModel {
     protected GolfView view;
     protected ArrayList<playingCard> deck,discard;
     protected GolfPlayerModel[] players;
-    protected int turn;
-    protected boolean gameOver;
+    protected int turn,drawResponse;
+    protected boolean gameOver,turnOver;
+    protected String drawnFrom;
+    protected playingCard drawnCard;
+    protected Phase phase;
+
 
 //  player size determines deck size, 52 card deck for 4 or less, double for 5 or more.
 //  create and fill player array based on player number, use game rules to disperse
@@ -19,6 +23,7 @@ public class GolfGameModel {
      * @param playerNum
      */
     public GolfGameModel(int playerNum) {
+        phase = new DrawPhase();
         deck = new ArrayList<>();
         Collections.addAll(deck,playingCard.createDeck());
         if (playerNum > 4){

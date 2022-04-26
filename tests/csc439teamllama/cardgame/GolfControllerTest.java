@@ -79,7 +79,7 @@ class GolfControllerTest {
         GolfController controller = new GolfController(view);
         controller.GameStart();
         controller.game.turn = 1;
-        controller.game.gameOver = true;
+        controller.game.gameOver = false;
         controller.game.players[0].hand = new playingCard[]{new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.ACE),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
@@ -242,15 +242,17 @@ class GolfControllerTest {
         controller.GameStart();
         controller.game.turn = 1;
         ((GolfCLITestView)controller.view).output = "";
-        controller.game.discard = controller.game.deck;
+        controller.game.discard.addAll(controller.game.deck);
         controller.game.deck.clear();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
         controller.Turn();
         assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
                 "Player 1's Turn\n"+
                         "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
                         "The deck has 0 remaining\n"+
-                        "The discard pile is empty\n"+
+                        "The top card on the discard pile is Card is face down.\n"+
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
@@ -347,6 +349,8 @@ class GolfControllerTest {
         controller.GameStart();
         controller.game.turn = 1;
         ((GolfCLITestView)controller.view).output = "";
+        controller.game.gameOver =false;
+        controller.game.turnOver = false;
         controller.Turn();
         assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
                 "Player 1's Turn\n"+
@@ -418,11 +422,10 @@ class GolfControllerTest {
                         "Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
                         "Enter 7 To Discard Chosen Card.\n"+
                         "Or -1 To Exit\n"+
-                "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
-                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                            "Enter Number To Proceed: "+
-                        "You Picked This Card From Discard! Please Discard A Card From Your Hand.\n"
-                        +
+                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "Enter Number To Proceed: "+
+                        "You Picked This Card From Discard! Please Discard A Card From Your Hand.\n"+
                         "Drawn card: spades,ace From: Discard\n"+
                         "Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
                         "Enter 7 To Discard Chosen Card.\n"+
@@ -435,10 +438,29 @@ class GolfControllerTest {
     @Test
     void drawDeckDiscardFromDeck(){
         GolfCLITestView view = new GolfCLITestView();
-        Collections.addAll(view.input,"5","2","7");
+        Collections.addAll(view.input,"5","clear","2","7");
         GolfController controller = new GolfController(view);
         controller.GameStart();
         assertThat(controller.game.discard.remove(0).toString()).isEqualTo("diamonds,nine");
+        assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
+                "Drawn card: diamonds,nine From: Deck\n"+
+                        "Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
+                        "Enter 7 To Discard Chosen Card.\n"+
+                        "Or -1 To Exit\n"+
+                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "Enter Number To Proceed: "+
+                        "Player 2's Turn\n"+
+                        "1.hearts,seven 2.hearts,six 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "The deck has 73 remaining\n"+
+                        "The top card on the discard pile is diamonds,nine\n"+
+                        "1. Print Game State Again\n"+
+                        "2. Pick Up From Deck\n"+
+                        "3. Pick Up From Discard\n"+
+                        "Or Enter -1 To Exit\n"+
+                        "Enter Number To Proceed: "
+        );
     }
     @Test
     void DrawDeckDiscardFromHand(){
@@ -453,11 +475,13 @@ class GolfControllerTest {
     }
 
     @Test
-    void DrawDiscardDiscardFromHand(){
+    void DrawDiscardPileDiscardFromHand(){
         GolfCLITestView view = new GolfCLITestView();
-        Collections.addAll(view.input,"6","2","6","3","6");
+        Collections.addAll(view.input,"6","2","6","3","6","-1");
         GolfController controller = new GolfController(view);
         controller.GameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
         controller.game.turn = 2;
         controller.view.DisplayHand(controller.game);
         assertThat(controller.game.discard.remove(0).toString()).isEqualTo("hearts,two");
