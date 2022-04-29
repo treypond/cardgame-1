@@ -38,7 +38,7 @@ public class GolfGameModel {
         players = new GolfPlayerModel[playerNum];
 
         //Adding a scoreboard array here to assist in printing out scores
-        GolfPlayerModel[] scoreBoard = players;
+        scoreBoard = players;
     }
 
 //  gets the player number for turn from round
@@ -56,13 +56,80 @@ public class GolfGameModel {
      * and prints it to the screen.
      */
     protected void ScoreboardUpdate(){
+
+        //Update player scores
+        UpdateScores();
+
+        //Set the scoreBoard array to be equal to the players array
         for(int i = 0; i < players.length; i++){
             scoreBoard[i] = players[i];
         }
 
+        //Sort the scoreBoard array
         Arrays.sort(scoreBoard);
 
-        //This uses the displayScoreBoard method that Tedla created. It is commented out at the moment.
+        //This uses the displayScoreBoard method to display the updated scores of the players
         //view.displayScoreBoard(this);
     }
+
+    protected void UpdateScores(){
+
+        for(int i = 0; i < players.length; i++){
+            players[i].score = 0;
+            for(int j = 0; j < 6; j++) {
+
+                /*
+                These lines compensate for columns that are equal. If the two cards in a column are equal, then their scores are skipped.
+                These conditionals all start by checking that the cards in question are face up, then they check to see that the current card is
+                equal to the one under it. If this is the case, then the loop continues on to the next iteration.
+                */
+                if (players[i].hand[0].getFacing() == playingCard.Facing.UP && players[i].hand[3].getFacing() == playingCard.Facing.UP &&
+                        j == 0 && players[i].hand[0].getNumber().getNum() == players[i].hand[3].getNumber().getNum()){
+                    continue;
+                }
+                if (players[i].hand[1].getFacing() == playingCard.Facing.UP && players[i].hand[4].getFacing() == playingCard.Facing.UP &&
+                        j == 1 && players[i].hand[1].getNumber().getNum() == players[i].hand[4].getNumber().getNum()){
+                    continue;
+                }
+                if (players[i].hand[2].getFacing() == playingCard.Facing.UP && players[i].hand[5].getFacing() == playingCard.Facing.UP &&
+                        j == 2 && players[i].hand[2].getNumber().getNum() == players[i].hand[5].getNumber().getNum()){
+                    continue;
+                }
+                if (players[i].hand[3].getFacing() == playingCard.Facing.UP && players[i].hand[0].getFacing() == playingCard.Facing.UP &&
+                        j == 3 && players[i].hand[3].getNumber().getNum() == players[i].hand[0].getNumber().getNum()){
+                    continue;
+                }
+                if (players[i].hand[4].getFacing() == playingCard.Facing.UP && players[i].hand[1].getFacing() == playingCard.Facing.UP &&
+                        j == 4 && players[i].hand[4].getNumber().getNum() == players[i].hand[1].getNumber().getNum()){
+                    continue;
+                }
+                if (players[i].hand[5].getFacing() == playingCard.Facing.UP && players[i].hand[2].getFacing() == playingCard.Facing.UP &&
+                        j == 5 && players[i].hand[5].getNumber().getNum() == players[i].hand[2].getNumber().getNum()){
+                    continue;
+                }
+
+                //If the card is face up, and the card isn't a 2, jack, queen, or king, then add that to the player's score
+                if(players[i].hand[j].getFacing() == playingCard.Facing.UP && (players[i].hand[j].getNumber().getNum() > 2 && players[i].hand[j].getNumber().getNum() < 11 || players[i].hand[j].getNumber().getNum() == 1)) {
+                    players[i].score += players[i].hand[j].getNumber().getNum();
+                }
+
+                //If they have a 2, subtract that from their score
+                else if (players[i].hand[j].getNumber().getNum() == 2){
+                    players[i].score -= players[i].hand[j].getNumber().getNum();
+                }
+
+                //If they have a jack or queen then add ten
+                else if (players[i].hand[j].getNumber().getNum() == 11 || players[i].hand[j].getNumber().getNum() == 12){
+                    players[i].score += 10;
+                }
+
+                //If the card being looked at was a king then nothing gets added to the player's score
+
+            }
+
+        }
+
+    }
+
+
 }
