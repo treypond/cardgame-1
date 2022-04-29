@@ -122,14 +122,21 @@ public class GolfCLIView extends GolfView {
         System.out.println("4."+game.players[game.playerIndex()].hand[3].toString()+ " 5." + game.players[game.playerIndex()].hand[4].toString()+ " 6." + game.players[game.playerIndex()].hand[5].toString());
     }
 
+
+    /**
+     * Display the ScoreBoard with the plays Name and Score. It also prints out what hole you
+     * are currently on and the total number of holes.
+     * @param game
+     */
     @Override
     protected void displayScoreBoard(GolfGameModel game) {
         System.out.println("-----SCOREBOARD-----");
 
         for (int i = 0; i<game.players.length; i++){
-//            System.out.println(i +". "+ player.name + " " + player.score);
-            System.out.println("-----------------");
+//            System.out.println(i +". "+ game.scoreBoard[i].name + ":   " + game.scoreBoard[i].score + " points");
         }
+
+//       System.out.println("You are currently on hole"+ game.currentHole+ " of a" +game.totalHole+" hole game.");
     }
 
 
