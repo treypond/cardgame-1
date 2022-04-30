@@ -2,9 +2,13 @@ package csc439teamllama.cardgame;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static com.google.common.truth.Truth.assertThat;
 
-class golfGameModelTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class GolfGameModelTest {
 
     @Test
     void playerIndex() {
