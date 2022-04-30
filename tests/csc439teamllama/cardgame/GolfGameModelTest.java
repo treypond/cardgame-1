@@ -13,10 +13,10 @@ class GolfGameModelTest {
     @Test
     void playerIndex() {
         GolfGameModel game = new GolfGameModel(2);
-        assertThat(game.PlayerIndex()).isEqualTo(0);
+        assertThat(game.playerIndex()).isEqualTo(0);
         game.turn=2;
-        assertThat(game.PlayerIndex()).isEqualTo(1);
+        assertThat(game.playerIndex()).isEqualTo(1);
         game.turn = 25;
-        assertThat(game.PlayerIndex()).isEqualTo(0);
+        assertThat(game.playerIndex()).isEqualTo(0);
     }
 }
