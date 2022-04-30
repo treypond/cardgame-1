@@ -10,11 +10,9 @@ public class GolfCLIView extends GolfView {
         in = new Scanner(System.in);
     }
 
-    /**
-     *Simple Title screen that displays the name of the game
-     */
+    /**Simple Title screen that displays the name of the game*/
     @Override
-    protected void TitleScreen() {
+    protected void titleScreen() {
         System.out.println(
                         "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
@@ -34,7 +32,7 @@ public class GolfCLIView extends GolfView {
      * @throws InputMismatchException
      */
     @Override
-    protected int GameStartOptions() throws InputMismatchException{
+    protected int gameStartOptions() throws InputMismatchException{
         System.out.print("How many players for this game: ");
         int option = in.nextInt();
         if( option < 1 && option != -1){
@@ -52,10 +50,10 @@ public class GolfCLIView extends GolfView {
      * @param game
      */
     @Override
-    protected void DisplayGameState(GolfGameModel game) {
-        int playerNum = game.PlayerIndex()+1;
+    protected void displayGameState(GolfGameModel game) {
+        int playerNum = game.playerIndex()+1;
         System.out.println("Player " +playerNum+ "\'s Turn");
-        DisplayHand(game);
+        displayHand(game);
         System.out.println("The deck has " + game.deck.size() + " remaining");
 
         if(game.discard.size() == 0){
@@ -72,7 +70,7 @@ public class GolfCLIView extends GolfView {
      * @throws InputMismatchException
      */
     @Override
-    protected int PromptDecision() throws InputMismatchException {
+    protected int promptDecision() throws InputMismatchException {
         System.out.println("1. Print Game State Again");
         System.out.println("2. Pick Up From Deck");
         System.out.println("3. Pick Up From Discard");
@@ -92,11 +90,11 @@ public class GolfCLIView extends GolfView {
      * @throws InputMismatchException
      */
     @Override
-    protected int PromptDiscard(GolfGameModel game) throws InputMismatchException{
+    protected int promptDiscard(GolfGameModel game) throws InputMismatchException{
         System.out.println("Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
                 "Enter 7 To Discard Chosen Card.");
         System.out.println("Or -1 To Exit");
-        DisplayHand(game);
+        displayHand(game);
         System.out.print("Enter Number To Proceed: ");
         int option = in.nextInt();
         if(option > 7 || option < 1 && option != -1){
@@ -110,7 +108,7 @@ public class GolfCLIView extends GolfView {
      * @param message
      */
     @Override
-    protected void SendMessageToPlayer(String message) {
+    protected void sendMessageToPlayer(String message) {
         System.out.println(message);
     }
 
@@ -119,15 +117,31 @@ public class GolfCLIView extends GolfView {
      * @param game
      */
     @Override
-    protected void DisplayHand(GolfGameModel game) {
-        System.out.println("1."+game.players[game.PlayerIndex()].hand[0].toString()+ " 2." + game.players[game.PlayerIndex()].hand[1].toString()+ " 3." + game.players[game.PlayerIndex()].hand[2].toString());
-        System.out.println("4."+game.players[game.PlayerIndex()].hand[3].toString()+ " 5." + game.players[game.PlayerIndex()].hand[4].toString()+ " 6." + game.players[game.PlayerIndex()].hand[5].toString());
+    protected void displayHand(GolfGameModel game) {
+        System.out.println("1."+game.players[game.playerIndex()].hand[0].toString()+ " 2." + game.players[game.playerIndex()].hand[1].toString()+ " 3." + game.players[game.playerIndex()].hand[2].toString());
+        System.out.println("4."+game.players[game.playerIndex()].hand[3].toString()+ " 5." + game.players[game.playerIndex()].hand[4].toString()+ " 6." + game.players[game.playerIndex()].hand[5].toString());
     }
 
+
     /**
-     *allow user to re-input decision
+     * Display the ScoreBoard with the plays Name and Score. It also prints out what hole you
+     * are currently on and the total number of holes.
+     * @param game
      */
-    protected void ClearScanner(){
+    @Override
+    protected void displayScoreBoard(GolfGameModel game) {
+        System.out.println("-----SCOREBOARD-----");
+
+        for (int i = 0; i<game.players.length; i++){
+//            System.out.println(i +". "+ game.scoreBoard[i].name + ":   " + game.scoreBoard[i].score + " points");
+        }
+
+//       System.out.println("You are currently on hole"+ game.currentHole+ " of a" +game.totalHole+" hole game.");
+    }
+
+
+    /**allow user to re-input decision*/
+    protected void clearScanner(){
         in.nextLine();
     }
 }

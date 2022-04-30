@@ -25,15 +25,15 @@ public class GolfController {
     /**
      * Set up the game by create the correct number of deck and deals the hand to all the players. Then starts the game
      */
-    public void GameStart(){
+    public void gameStart(){
 //      ame.players[0].hand.add(game.deck.remove(game.deck.size()-1));
 //      game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
 //      example of hand/deck access
         boolean correctPlayer = false;
-        view.TitleScreen();
+        view.titleScreen();
         do {
             try {
-                int players = view.GameStartOptions();
+                int players = view.gameStartOptions();
                 if (players==-1){
                     return;
                 }
@@ -41,8 +41,8 @@ public class GolfController {
                 correctPlayer = true;
             }
             catch (InputMismatchException e) {
-                view.SendMessageToPlayer("please input a number: greater than 0");
-                view.ClearScanner();
+                view.sendMessageToPlayer("please input a number: greater than 0");
+                view.clearScanner();
             }
         }
         while (!correctPlayer);
@@ -54,7 +54,7 @@ public class GolfController {
             game.players[i].hand[0].flipCard();
             game.players[i].hand[1].flipCard();
         }
-        GameRunner();
+        gameRunner();
     }
 
 //    method with loop to continue game until completion, uses other method calls in controller
@@ -62,12 +62,10 @@ public class GolfController {
 //    7 As a player, when my turn is over, the game proceeds to the next player’s turn, so that
 //    the game  continues.
 
-    /**
-     * Check if the gameover and if it is not it continues to the next player turn
-     */
-    protected void GameRunner(){
+    /**Check if the gameover and if it is not it continues to the next player turn*/
+    protected void gameRunner(){
         while (!game.gameOver){
-            Turn();
+            turn();
             game.turnOver = false;
         }
     }
@@ -92,8 +90,8 @@ public class GolfController {
      * and actions allowed to be done by the player. During the player's turn the method prompts the user to discard a
      * card from hand and take on from the deck or discard pile.Then indicated that the current player turn is over
      */
-    protected void Turn(){
-        view.DisplayGameState(game);
+    protected void turn(){
+        view.displayGameState(game);
         //main turn loop, all loops in this method use try catch top enforce proper inputs for each prompt,
         //and the nested loops and try catches make it so that each error is handled appropriately
         //turn has ended so we increment turn counter

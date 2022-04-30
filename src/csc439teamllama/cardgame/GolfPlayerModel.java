@@ -4,9 +4,7 @@ public class GolfPlayerModel implements Comparable<GolfPlayerModel>{
     protected playingCard[] hand;
     protected int score;
 
-    /**
-     * Player Constructor which is initialized with an empty hand of playing cards
-     */
+    /**Player Constructor which is initialized with an empty hand of playing cards*/
     public GolfPlayerModel(){
         hand = new playingCard[6];
     }

@@ -47,7 +47,7 @@ public class GolfGameModel {
      * Decides which players turn it is
      * @return index of the player whose turn it is.
      */
-    public int PlayerIndex(){
+    public int playerIndex(){
         return ((turn-1)%(players.length));
     }
 

@@ -8,7 +8,7 @@ public class GolfCLITestView extends GolfView {
     protected ArrayList<String> input = new ArrayList<>();
 
     @Override
-    protected void TitleScreen() {
+    protected void titleScreen() {
         output+=
                         "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
@@ -23,7 +23,7 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected int GameStartOptions()  throws InputMismatchException{
+    protected int gameStartOptions()  throws InputMismatchException{
         try{
             output += "How many players for this game: ";
             int option;
@@ -48,10 +48,10 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected void DisplayGameState(GolfGameModel game) {
-        int index = game.PlayerIndex()+1;
+    protected void displayGameState(GolfGameModel game) {
+        int index = game.playerIndex()+1;
         output += "Player " + index + "'s Turn\n";
-        DisplayHand(game);
+        displayHand(game);
         output+= "The deck has " + game.deck.size() + " remaining\n";
 
         if( game.discard.size() == 0){
@@ -63,7 +63,7 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected int PromptDecision() throws InputMismatchException {
+    protected int promptDecision() throws InputMismatchException {
         try{
             output += "1. Print Game State Again\n";
             output += "2. Pick Up From Deck\n";
@@ -92,12 +92,12 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected int PromptDiscard(GolfGameModel game) throws InputMismatchException {
+    protected int promptDiscard(GolfGameModel game) throws InputMismatchException {
         try{
             output+=("Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
                     "Enter 7 To Discard Chosen Card.\n");
             output += "Or -1 To Exit\n";
-            DisplayHand(game);
+            displayHand(game);
             output+= "Enter Number To Proceed: ";
             int option;
             if(!input.isEmpty()) {
@@ -121,18 +121,28 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected void SendMessageToPlayer(String message) {
+    protected void sendMessageToPlayer(String message) {
         output+=message+"\n";
     }
 
     @Override
-    protected void DisplayHand(GolfGameModel game) {
-        output+= "1."+game.players[game.PlayerIndex()].hand[0].toString()+ " 2." + game.players[game.PlayerIndex()].hand[1].toString()+ " 3." + game.players[game.PlayerIndex()].hand[2].toString() + "\n";
-        output+= "4."+game.players[game.PlayerIndex()].hand[3].toString()+ " 5." + game.players[game.PlayerIndex()].hand[4].toString()+ " 6." + game.players[game.PlayerIndex()].hand[5].toString() + "\n";
+    protected void displayHand(GolfGameModel game) {
+        output+= "1."+game.players[game.playerIndex()].hand[0].toString()+ " 2." + game.players[game.playerIndex()].hand[1].toString()+ " 3." + game.players[game.playerIndex()].hand[2].toString() + "\n";
+        output+= "4."+game.players[game.playerIndex()].hand[3].toString()+ " 5." + game.players[game.playerIndex()].hand[4].toString()+ " 6." + game.players[game.playerIndex()].hand[5].toString() + "\n";
     }
 
     @Override
-    protected void ClearScanner() {
+    protected void displayScoreBoard(GolfGameModel game) {
+        output+= "-----SCOREBOARD-----";
+
+        for (int i = 0; i<game.players.length; i++){
+//            output+= i +". "+ player.name + " " + player.score;
+            output+= "-----------------";
+        }
+    }
+
+    @Override
+    protected void clearScanner() {
     }
 
     protected void clearVars() {
