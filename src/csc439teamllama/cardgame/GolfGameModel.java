@@ -38,7 +38,7 @@ public class GolfGameModel {
         players = new GolfPlayerModel[playerNum];
 
         //Adding a scoreboard array here to assist in printing out scores
-        GolfPlayerModel[] scoreBoard = players;
+        scoreBoard = players;
     }
 
 //  gets the player number for turn from round
