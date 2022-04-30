@@ -55,10 +55,10 @@ public class GolfGameModel {
      * This method updates the scoreboard array to have the players in the correct order
      * and prints it to the screen.
      */
-    protected void ScoreboardUpdate(){
+    protected void scoreboardUpdate(){
 
         //Update player scores
-        UpdateScores();
+        updateScores();
 
         //Set the scoreBoard array to be equal to the players array
         for(int i = 0; i < players.length; i++){
@@ -76,7 +76,7 @@ public class GolfGameModel {
      * This method updates the scores of all players. It does so by incrementally setting every player's score to 0,
      * and then recalculating their true score according to the rules of Golf.
      */
-    protected void UpdateScores(){
+    protected void updateScores(){
 
         for(int i = 0; i < players.length; i++){
             players[i].score = 0;

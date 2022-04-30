@@ -9,6 +9,6 @@ public class EndPhase implements Phase{
         game.turn++;
         game.drawResponse = 0;
         game.phase = new DrawPhase();
-        game.ScoreboardUpdate();
+        game.scoreboardUpdate();
     }
 }
