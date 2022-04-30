@@ -24,6 +24,7 @@ public class FakeGolfCLIView extends GolfView {
 
     @Override
     protected int[] gameStartOptions()  throws InputMismatchException{
+        output+="\n";
         try{
             output += "How many players for this game: ";
             int[] options = new int[2];
@@ -63,9 +64,15 @@ public class FakeGolfCLIView extends GolfView {
 
     @Override
     protected void displayGameState(GolfGameModel game) {
-        int index = game.playerIndex()+1;
-        output += "Player " + index + "'s Turn\n";
-        displayHand(game);
+        output+= "\n";
+        System.out.println("Current player hands:");
+        for (GolfPlayerModel player: game.players
+        ) {
+            output+="\n";
+            output+=(player.name+"'s current hand:");
+            output += ("1."+player.hand[0].toString()+ " 2." + player.hand[1].toString()+ " 3." + player.hand[2].toString());
+            output+=("4."+player.hand[3].toString()+ " 5." + player.hand[4].toString()+ " 6." + player.hand[5].toString());
+        }
         output+= "The deck has " + game.deck.size() + " remaining\n";
 
         if( game.discard.size() == 0){
@@ -74,6 +81,7 @@ public class FakeGolfCLIView extends GolfView {
         else{
             output+= "The top card on the discard pile is " + game.discard.get(game.discard.size()-1)+"\n";
         }
+        output+=("Player " +game.players[game.playerIndex()].name+ "\'s Turn\n");
     }
 
     @Override
@@ -82,6 +90,7 @@ public class FakeGolfCLIView extends GolfView {
             output += "1. Print Game State Again\n";
             output += "2. Pick Up From Deck\n";
             output += "3. Pick Up From Discard\n";
+            output += ("4. Display Current Scores\n");
             output += "Or Enter -1 To Exit\n";
             output += "Enter Number To Proceed: ";
             int option;
@@ -95,7 +104,7 @@ public class FakeGolfCLIView extends GolfView {
             else {
                 option = -1;
             }
-            if(option > 3 || option < 1 && option != -1){
+            if(option > 4 || option < 1 && option != -1){
                 throw new InputMismatchException();
             }
             return option;
@@ -147,17 +156,30 @@ public class FakeGolfCLIView extends GolfView {
 
     @Override
     protected void displayScoreBoard(GolfGameModel game) {
-        output+= "-----SCOREBOARD-----";
+        output+= "\n-----SCOREBOARD-----";
 
-        for (int i = 0; i<game.players.length; i++){
-//            output+= i +". "+ player.name + " " + player.score;
-            output+= "-----------------";
+        for (int i = 0; i<game.scoreBoard.length; i++){
+            output+=(i+1 +". "+ game.scoreBoard[i].name + ":   score for the hole: " + game.scoreBoard[i].score + " points   score for the rest of the game: " + game.scoreBoard[i].totalscore + " points");
         }
+        if (game.currentHole <= game.totalHoles)
+            output+=("You are currently on hole "+ game.currentHole+ " of a " +game.totalHoles+" hole game.");
     }
 
     @Override
     protected String promptPlayerName(int playerNum) {
-        return null;
+        output+= ("\nEnter a name for player "+playerNum+ " :");
+        String option = "";
+        if(!input.isEmpty()) {
+            if (input.get(0).equals("clear")){
+                output = "";
+                input.remove(0);
+            }
+            option = input.remove(0);
+        }
+        else {
+            option = "-1";
+        }
+        return option;
     }
 
     @Override
@@ -166,12 +188,27 @@ public class FakeGolfCLIView extends GolfView {
 
     @Override
     protected int promptFlip(GolfGameModel game) {
-        return 0;
+        output+=("\nPlease pick a card in you hand to flip: ");
+        int option;
+        if(!input.isEmpty()) {
+            if (input.get(0).equals("clear")){
+                output = "";
+                input.remove(0);
+            }
+            option = Integer.parseInt(input.remove(0));
+        }
+        else {
+            option = -1;
+        }
+        if(option > 6 || option < 1 && option != -1){
+            throw new InputMismatchException();
+        }
+        return option;
     }
 
     @Override
     protected void spacer() {
-
+        output+= "\n";
     }
 
     protected void clearVars() {
