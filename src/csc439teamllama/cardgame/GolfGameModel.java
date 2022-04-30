@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.Arrays;
 
 public class GolfGameModel {
-    protected GolfView view;
     protected ArrayList<playingCard> deck,discard;
     protected GolfPlayerModel[] players;
-    protected int turn,drawResponse;
+    protected int turn,drawResponse,currentHole,totalHoles;
     protected boolean gameOver,turnOver;
     protected String drawnFrom;
     protected playingCard drawnCard;
@@ -25,20 +24,26 @@ public class GolfGameModel {
      * Constructor for the game. It creates a game based on the number of player playing the game.
      * @param playerNum
      */
-    public GolfGameModel(int playerNum) {
-        phase = new DrawPhase();
+    public GolfGameModel(int playerNum,int totalHoles) {
+        phase = new FlipPhase();
         deck = new ArrayList<>();
         Collections.addAll(deck,playingCard.createDeck());
         if (playerNum > 4){
             Collections.addAll(deck,playingCard.createDeck());
         }
+        Collections.shuffle(deck);
         discard = new ArrayList<>();
         gameOver = false;
         turn = 1;
+        this.totalHoles = totalHoles;
+        currentHole = 1;
         players = new GolfPlayerModel[playerNum];
 
         //Adding a scoreboard array here to assist in printing out scores
-        scoreBoard = players;
+        scoreBoard = new GolfPlayerModel[playerNum];
+        for(int i = 0; i < players.length; i++){
+            scoreBoard[i] = players[i];
+        }
     }
 
 //  gets the player number for turn from round
@@ -64,12 +69,8 @@ public class GolfGameModel {
         for(int i = 0; i < players.length; i++){
             scoreBoard[i] = players[i];
         }
-
         //Sort the scoreBoard array
         Arrays.sort(scoreBoard);
-
-        //This uses the displayScoreBoard method to display the updated scores of the players
-        //view.displayScoreBoard(this);
     }
 
     /**
@@ -113,17 +114,17 @@ public class GolfGameModel {
                 }
 
                 //If the card is face up, and the card isn't a 2, jack, queen, or king, then add that to the player's score
-                if(players[i].hand[j].getFacing() == playingCard.Facing.UP && (players[i].hand[j].getNumber().getNum() > 2 && players[i].hand[j].getNumber().getNum() < 11 || players[i].hand[j].getNumber().getNum() == 1)) {
+                if(players[i].hand[j].getFacing() == playingCard.Facing.UP && (((players[i].hand[j].getNumber().getNum() > 2 && players[i].hand[j].getNumber().getNum() < 11) || players[i].hand[j].getNumber().getNum() == 1))) {
                     players[i].score += players[i].hand[j].getNumber().getNum();
                 }
 
                 //If they have a 2, subtract that from their score
-                else if (players[i].hand[j].getNumber().getNum() == 2){
+                else if (players[i].hand[j].getFacing() == playingCard.Facing.UP && players[i].hand[j].getNumber().getNum() == 2){
                     players[i].score -= players[i].hand[j].getNumber().getNum();
                 }
 
                 //If they have a jack or queen then add ten
-                else if (players[i].hand[j].getNumber().getNum() == 11 || players[i].hand[j].getNumber().getNum() == 12){
+                else if (players[i].hand[j].getFacing() == playingCard.Facing.UP && (players[i].hand[j].getNumber().getNum() == 11 || players[i].hand[j].getNumber().getNum() == 12)){
                     players[i].score += 10;
                 }
 

@@ -26,33 +26,30 @@ public class GolfController {
      * Set up the game by create the correct number of deck and deals the hand to all the players. Then starts the game
      */
     public void gameStart(){
-//      ame.players[0].hand.add(game.deck.remove(game.deck.size()-1));
-//      game.discard.add(game.players[1].hand.remove(game.players[2].hand.size()-1));
 //      example of hand/deck access
-        boolean correctPlayer = false;
+        boolean correctPlayer  = false;
+        boolean playersNamed = false;
         view.titleScreen();
         do {
-            try {
-                int players = view.gameStartOptions();
-                if (players==-1){
-                    return;
+                try {
+                    int[] gameVars = view.gameStartOptions();
+                    if (gameVars[0] == -1) {
+                        return;
+                    }
+                    game = new GolfGameModel(gameVars[0],gameVars[1]);
+                    correctPlayer = true;
                 }
-                game = new GolfGameModel(players);
-                correctPlayer = true;
+                catch (InputMismatchException e) {
+                    view.sendMessageToPlayer("please input a number: greater than 0 for player and holes");
+                    view.clearScanner();
+                }
             }
-            catch (InputMismatchException e) {
-                view.sendMessageToPlayer("please input a number: greater than 0");
-                view.clearScanner();
-            }
-        }
         while (!correctPlayer);
         for (int i = 0; i < game.players.length; i++) {
-            game.players[i] = new GolfPlayerModel();
+            game.players[i] = new GolfPlayerModel(view.promptPlayerName(i+1));
             for (int j = 0; j < 6; j++) {
                 game.players[i].hand[j] = game.deck.remove(game.deck.size()-1);
             }
-            game.players[i].hand[0].flipCard();
-            game.players[i].hand[1].flipCard();
         }
         gameRunner();
     }
@@ -91,7 +88,6 @@ public class GolfController {
      * card from hand and take on from the deck or discard pile.Then indicated that the current player turn is over
      */
     protected void turn(){
-        view.displayGameState(game);
         //main turn loop, all loops in this method use try catch top enforce proper inputs for each prompt,
         //and the nested loops and try catches make it so that each error is handled appropriately
         //turn has ended so we increment turn counter

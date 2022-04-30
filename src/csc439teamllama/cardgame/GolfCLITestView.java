@@ -23,24 +23,38 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
-    protected int gameStartOptions()  throws InputMismatchException{
+    protected int[] gameStartOptions()  throws InputMismatchException{
         try{
             output += "How many players for this game: ";
-            int option;
+            int[] options = new int[2];
             if(!input.isEmpty()) {
                 if (input.get(0).equals("clear")){
                     output = "";
                     input.remove(0);
                 }
-                option = Integer.parseInt(input.remove(0));
+                options[0] = Integer.parseInt(input.remove(0));
             }
             else {
-                option = -1;
+                options[0] = -1;
             }
-            if( option < 1 && option != -1){
+            if( options[0] < 1 && options[0] != -1){
                 throw new InputMismatchException();
             }
-            return option;
+            output+= "How many holes for this game: ";
+            if(!input.isEmpty()) {
+                if (input.get(0).equals("clear")){
+                    output = "";
+                    input.remove(0);
+                }
+                options[1] = Integer.parseInt(input.remove(0));
+            }
+            else {
+                options[1] = -1;
+            }
+            if( options[1] < 1 && options[1] != -1){
+                throw new InputMismatchException();
+            }
+            return options;
         }
         catch (NumberFormatException e){
             throw new InputMismatchException();
@@ -142,7 +156,22 @@ public class GolfCLITestView extends GolfView {
     }
 
     @Override
+    protected String promptPlayerName(int playerNum) {
+        return null;
+    }
+
+    @Override
     protected void clearScanner() {
+    }
+
+    @Override
+    protected int promptFlip(GolfGameModel game) {
+        return 0;
+    }
+
+    @Override
+    protected void spacer() {
+
     }
 
     protected void clearVars() {

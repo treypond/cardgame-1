@@ -2,11 +2,15 @@ package csc439teamllama.cardgame;
 
 public class GolfPlayerModel implements Comparable<GolfPlayerModel>{
     protected playingCard[] hand;
-    protected int score;
+    protected int score, totalscore;
+    protected String name;
+    protected boolean flipHandled;
 
     /**Player Constructor which is initialized with an empty hand of playing cards*/
-    public GolfPlayerModel(){
+    public GolfPlayerModel(String playerName){
         hand = new playingCard[6];
+        name = playerName;
+        flipHandled = false;
     }
 
     /**
@@ -18,6 +22,6 @@ public class GolfPlayerModel implements Comparable<GolfPlayerModel>{
      */
     @Override
     public int compareTo(GolfPlayerModel other){
-        return this.score-other.score;
+        return (this.score+this.totalscore)-(other.score+other.totalscore);
     }
 }

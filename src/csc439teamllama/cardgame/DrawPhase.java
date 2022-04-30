@@ -18,7 +18,7 @@ public class DrawPhase implements Phase {
             }
             //we enter here because the user has either entered 2 or three, so we know they have chosen to draw,
             //and we must handle it appropriately, including errors like drawing from empty piles.
-            else {
+            else if (game.drawResponse == 2 || game.drawResponse == 3){
                 //2 means we are drawing from deck, if it is empty we prompt user and inform them as such
                 if (game.drawResponse == 2) {
                     if (game.deck.isEmpty()){
@@ -46,10 +46,15 @@ public class DrawPhase implements Phase {
                 //now that we have legally chosen a drawn card we choose which card to discard and replace from our hand
                 //and if we drew deck possibly discard our drawn card
             }
+//            option 4, so display scores
+            else {
+                game.scoreboardUpdate();
+                view.displayScoreBoard(game);
+            }
         }
         //catch for out of bounds response to prompt to start turn, clears error from scanner
         catch (InputMismatchException e){
-            view.sendMessageToPlayer("please input a number between 1 and 3");
+            view.sendMessageToPlayer("please input a number between 1 and 4");
             view.clearScanner();
         }
     }

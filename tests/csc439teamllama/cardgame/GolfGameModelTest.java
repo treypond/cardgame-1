@@ -12,7 +12,7 @@ class GolfGameModelTest {
 
     @Test
     void playerIndex() {
-        GolfGameModel game = new GolfGameModel(2);
+        GolfGameModel game = new GolfGameModel(2,5);
         assertThat(game.playerIndex()).isEqualTo(0);
         game.turn=2;
         assertThat(game.playerIndex()).isEqualTo(1);

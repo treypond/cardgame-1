@@ -1,12 +1,14 @@
 package csc439teamllama.cardgame;
 
+import java.io.IOException;
+
 public abstract class GolfView {
 
     abstract protected void titleScreen();
 //  As a player, I’d like to be presented with a title screen and then be able to select
 //  how many  players there are, so that I can play the game in multiple
 //  configurations
-    abstract protected int gameStartOptions();
+    abstract protected int[] gameStartOptions();
 
 //  4 As a player, on each turn, I would like the game to display who’s turn it is, their hand, the
 //  draw pile and last discarded card
@@ -37,5 +39,11 @@ public abstract class GolfView {
 
     abstract protected void displayScoreBoard(GolfGameModel game);
 
+    abstract protected String promptPlayerName(int playerNum);
+
     abstract protected void clearScanner();
+
+    abstract protected int promptFlip(GolfGameModel game);
+
+    abstract protected void spacer();
 }
