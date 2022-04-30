@@ -72,6 +72,10 @@ public class GolfGameModel {
         //view.displayScoreBoard(this);
     }
 
+    /**
+     * This method updates the scores of all players. It does so by incrementally setting every player's score to 0,
+     * and then recalculating their true score according to the rules of Golf.
+     */
     protected void UpdateScores(){
 
         for(int i = 0; i < players.length; i++){
