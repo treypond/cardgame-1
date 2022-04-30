@@ -9,7 +9,7 @@ import java.util.Collections;
 public class HoleEndPhase implements Phase {
     @Override
     public void execute(GolfGameModel game, GolfView view ){
-         // game.scoreBoardUpdate();
+          game.scoreBoardUpdate();
 
           game.deck.addAll(game.discard);
           for(int i=0; i<game.players.length;i++){
@@ -24,5 +24,13 @@ public class HoleEndPhase implements Phase {
               }
           }
        game.phase= new DrawPhase();
+          game.currentHole+=1;
+          if(game.currentHole==game.totalHoles){
+            view.SendMessageToPlayer(" Congrats "+game.scoreBoard[0].name+"!");
+            game.scoreBoard.displayScoreBoard();
+            game.gameOver=true;
+          }
+
     }
+
 }
