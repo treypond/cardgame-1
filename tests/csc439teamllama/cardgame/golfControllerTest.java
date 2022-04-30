@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class golfControllerTest {
+class GolfControllerTest {
 
     @Test
     void gameStart() {
