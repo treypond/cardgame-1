@@ -3,7 +3,7 @@ package csc439teamllama.cardgame;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-public class GolfCLITestView extends GolfView {
+public class FakeGolfCLIView extends GolfView {
     protected String output = "";
     protected ArrayList<String> input = new ArrayList<>();
 

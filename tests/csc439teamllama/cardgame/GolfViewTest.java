@@ -13,9 +13,9 @@ class GolfViewTest {
 
     @Test
     void TitleScreenTest(){
-        GolfController controllerTest = new GolfController(new GolfCLITestView());
+        GolfController controllerTest = new GolfController(new FakeGolfCLIView());
         controllerTest.view.titleScreen();
-        assertThat(((GolfCLITestView) controllerTest.view).output).isEqualTo(
+        assertThat(((FakeGolfCLIView) controllerTest.view).output).isEqualTo(
                 "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
                         "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
                         " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
@@ -30,17 +30,17 @@ class GolfViewTest {
 
     @Test
     void gameStartOptions() {
-        GolfController controllerTest = new GolfController(new GolfCLITestView());
-        Collections.addAll(((GolfCLITestView)controllerTest.view).input, "10","-1");
+        GolfController controllerTest = new GolfController(new FakeGolfCLIView());
+        Collections.addAll(((FakeGolfCLIView)controllerTest.view).input, "10","-1");
         assertThat(controllerTest.view.gameStartOptions()).isEqualTo(10);
-        assertThat(((GolfCLITestView) controllerTest.view).output).isEqualTo(
+        assertThat(((FakeGolfCLIView) controllerTest.view).output).isEqualTo(
         "How many players for this game: "
         );
     }
 
     @Test
     void displayGameStateWithEmptyDiscard() {
-        GolfCLITestView view = new GolfCLITestView();
+        FakeGolfCLIView view = new FakeGolfCLIView();
         Collections.addAll((view).input, "2");
         GolfController controllerTest = new GolfController(view);
         controllerTest.gameStart();
@@ -74,7 +74,7 @@ class GolfViewTest {
 
     @Test
     void displayGameStateWithoutEmptyDiscard() {
-        GolfCLITestView view = new GolfCLITestView();
+        FakeGolfCLIView view = new FakeGolfCLIView();
         Collections.addAll((view).input, "2");
         GolfController controllerTest = new GolfController(view);
         controllerTest.gameStart();
@@ -115,7 +115,7 @@ class GolfViewTest {
 
     @Test
     void promptDecision() throws InputMismatchException {
-        GolfCLITestView view = new GolfCLITestView();
+        FakeGolfCLIView view = new FakeGolfCLIView();
         Collections.addAll((view).input, "2","3","-1","0","a");
         assertThat(view.promptDecision()).isEqualTo(2);
         assertThat(view.promptDecision()).isEqualTo(3);
@@ -153,11 +153,11 @@ class GolfViewTest {
 
     @Test
     void promptDiscard() {
-        GolfCLITestView view = new GolfCLITestView();
+        FakeGolfCLIView view = new FakeGolfCLIView();
         Collections.addAll((view).input, "4","-1","2","3","-1","0","a");
         GolfController controller = new GolfController(view);
         controller.gameStart();
-        ((GolfCLITestView)controller.view).output = "";
+        ((FakeGolfCLIView)controller.view).output = "";
         controller.game.turn=1;
         assertThat(view.promptDiscard(controller.game)).isEqualTo(2);
         assertThat(view.promptDiscard(controller.game)).isEqualTo(3);
@@ -168,7 +168,7 @@ class GolfViewTest {
         error = assertThrows(InputMismatchException.class,()->{
             view.promptDiscard(controller.game);
         });
-        assertThat(((GolfCLITestView)controller.view).output).isEqualTo(
+        assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
                 "Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
                         "Enter 7 To Discard Chosen Card.\n"+
         "Or -1 To Exit\n"+
@@ -208,19 +208,19 @@ class GolfViewTest {
 
     @Test
     void sendMessageToPlayer() {
-        GolfCLITestView view = new GolfCLITestView();
+        FakeGolfCLIView view = new FakeGolfCLIView();
         view.sendMessageToPlayer("This Will Be Output");
         assertThat(view.output).isEqualTo("This Will Be Output\n");
     }
     @Test
     void testDisplayHand(){
-        GolfController controllerTest = new GolfController(new GolfCLITestView());
-        ((GolfCLITestView)controllerTest.view).input.add("4");
+        GolfController controllerTest = new GolfController(new FakeGolfCLIView());
+        ((FakeGolfCLIView)controllerTest.view).input.add("4");
         controllerTest.gameStart();
-        ((GolfCLITestView)controllerTest.view).clearVars();
+        ((FakeGolfCLIView)controllerTest.view).clearVars();
         controllerTest.game.turn = 1;
         controllerTest.view.displayHand(controllerTest.game);
-        assertThat(((GolfCLITestView)controllerTest.view).output).isEqualTo(
+        assertThat(((FakeGolfCLIView)controllerTest.view).output).isEqualTo(
                 "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"
         );
