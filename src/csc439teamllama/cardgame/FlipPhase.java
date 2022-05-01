@@ -16,6 +16,10 @@ public class FlipPhase implements Phase{
             try {
                 view.displayHand(game);
                 int option = view.promptFlip(game)-1;
+                if (option == -2){
+                    game.gameOver = true;
+                    return;
+                }
                 if (game.players[game.playerIndex()].hand[option].getFacing() == playingCard.Facing.UP)
                     view.sendMessageToPlayer("That card is already flipped up! please choose another.");
                 else

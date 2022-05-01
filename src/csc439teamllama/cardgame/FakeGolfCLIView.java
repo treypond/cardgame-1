@@ -190,20 +190,25 @@ public class FakeGolfCLIView extends GolfView {
     protected int promptFlip(GolfGameModel game) {
         output+=("\nPlease pick a card in you hand to flip: ");
         int option;
-        if(!input.isEmpty()) {
-            if (input.get(0).equals("clear")){
-                output = "";
-                input.remove(0);
+        try {
+            if(!input.isEmpty()) {
+                if (input.get(0).equals("clear")){
+                    output = "";
+                    input.remove(0);
+                }
+                option = Integer.parseInt(input.remove(0));
             }
-            option = Integer.parseInt(input.remove(0));
+            else {
+                option = -1;
+            }
+            if(option > 6 || option < 1 && option != -1){
+                throw new InputMismatchException();
+            }
+            return option;
         }
-        else {
-            option = -1;
-        }
-        if(option > 6 || option < 1 && option != -1){
+                catch (NumberFormatException e){
             throw new InputMismatchException();
         }
-        return option;
     }
 
     @Override

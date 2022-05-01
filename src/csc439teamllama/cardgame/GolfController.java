@@ -33,7 +33,7 @@ public class GolfController {
         do {
                 try {
                     int[] gameVars = view.gameStartOptions();
-                    if (gameVars[0] == -1) {
+                    if (gameVars[0] == -1 || gameVars[1] == -1) {
                         return;
                     }
                     game = new GolfGameModel(gameVars[0],gameVars[1]);
@@ -47,6 +47,10 @@ public class GolfController {
         while (!correctPlayer);
         for (int i = 0; i < game.players.length; i++) {
             game.players[i] = new GolfPlayerModel(view.promptPlayerName(i+1));
+            if(game.players[i].name.equals("-1")){
+                game.gameOver = true;
+                return;
+            }
             for (int j = 0; j < 6; j++) {
                 game.players[i].hand[j] = game.deck.remove(game.deck.size()-1);
             }
