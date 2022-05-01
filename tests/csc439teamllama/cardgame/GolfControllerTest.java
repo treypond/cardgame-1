@@ -10,86 +10,64 @@ class GolfControllerTest {
 
     @Test
     void gameStart() {
-        GolfController controllerTest = new GolfController(new FakeGolfCLIView());
-        Collections.addAll(((FakeGolfCLIView)controllerTest.view).input, "10","-1","2","-1");
-        controllerTest.gameStart();
-        assertThat(controllerTest.game.deck.size()).isEqualTo(44);
-        assertThat(controllerTest.game.players[0].hand[0].getFacing()).isEqualTo(playingCard.Facing.UP);
-        assertThat(controllerTest.game.players[3].hand[1].getFacing()).isEqualTo(playingCard.Facing.UP);
-        assertThat(controllerTest.game.players[5].hand[5].getFacing()).isEqualTo(playingCard.Facing.DOWN);
-        assertThat(controllerTest.game.players[0].hand[0].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
-        assertThat(controllerTest.game.players[0].hand[0].getNumber()).isEqualTo(playingCard.Number.KING);
-        assertThat(controllerTest.game.players[6].hand[4].getSuit()).isEqualTo(playingCard.Suit.SPADES);
-        assertThat(controllerTest.game.players[6].hand[4].getNumber()).isEqualTo(playingCard.Number.QUEEN);
-        assertThat(controllerTest.game.players[9].hand[3].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
-        assertThat(controllerTest.game.players[9].hand[3].getNumber()).isEqualTo(playingCard.Number.EIGHT);
-        controllerTest.gameStart();
-        assertThat(controllerTest.game.deck.size()).isEqualTo(40);
-        assertThat(((FakeGolfCLIView) controllerTest.view).output).isEqualTo(
-                "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
-                        "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
-                        " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
-                        " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
-                        " 88 8888           88 8888         88 8 8888         8 888888888888 \n" +
-                        " 88 8888           88 8888         88 8 8888         8 8888         \n" +
-                        " 88 8888   8888888 88 8888        ,8P 8 8888         8 8888         \n" +
-                        " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
-                        "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
-                        "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+"Player 1's Turn\n"+
-                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
-                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 44 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-                        "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
-                        "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
-                        " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
-                        " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
-                        " 88 8888           88 8888         88 8 8888         8 888888888888 \n" +
-                        " 88 8888           88 8888         88 8 8888         8 8888         \n" +
-                        " 88 8888   8888888 88 8888        ,8P 8 8888         8 8888         \n" +
-                        " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
-                        "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
-                        "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+"Player 1's Turn\n"+
-                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
-                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 40 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "
-        );
+        GolfController controller = new GolfController(new FakeGolfCLIView());
+        Collections.addAll(((FakeGolfCLIView)controller.view).input, "10","1","p1","P2","P3","P4","p5","p6","p7","p8","p9","p10","-1","1","2","-1","2","1","p1","p2","-1");
+        controller.gameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        controller.gameRunner();
+        assertThat(controller.game.deck.size()).isEqualTo(44);
+        assertThat(controller.game.players[0].hand[0].getFacing()).isEqualTo(playingCard.Facing.UP);
+        assertThat(controller.game.players[5].hand[5].getFacing()).isEqualTo(playingCard.Facing.DOWN);
+        assertThat(controller.game.players[0].hand[0].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
+        assertThat(controller.game.players[0].hand[0].getNumber()).isEqualTo(playingCard.Number.KING);
+        assertThat(controller.game.players[6].hand[4].getSuit()).isEqualTo(playingCard.Suit.SPADES);
+        assertThat(controller.game.players[6].hand[4].getNumber()).isEqualTo(playingCard.Number.QUEEN);
+        assertThat(controller.game.players[9].hand[3].getSuit()).isEqualTo(playingCard.Suit.HEARTS);
+        assertThat(controller.game.players[9].hand[3].getNumber()).isEqualTo(playingCard.Number.EIGHT);
+        controller.gameStart();
+        assertThat(controller.game.deck.size()).isEqualTo(40);
     }
 
     @Test
     void ControllerPromptReDisplay(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"4","-1","1");
+        Collections.addAll(view.input,"4","1","p1","P2","P3","P4","-1","1","2","clear","1");
         GolfController controller = new GolfController(view);
         controller.gameStart();
-        controller.game.turn = 1;
         controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
         controller.game.players[0].hand = new playingCard[]{new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.ACE),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
                                                             new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
                                                             new playingCard(true,4,12),
                                                             new playingCard(true,4,3),
                                                             new playingCard(true,3,11)};
-        ((FakeGolfCLIView)controller.view).output = "";
-        controller.turn();
+        controller.gameRunner();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "Player 1's Turn\n"+
-                        "1.spades,ace 2.diamonds,king 3.clubs,two\n"+
-                        "4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
-                        "The deck has 28 remaining\n"+
+                "p1's current hand:1.clubs,two 2.diamonds,king 3.clubs,two4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
+                        "P2's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "P3's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "P4's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 27 remaining\n"+
                         "The discard pile is empty\n"+
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
@@ -474,13 +452,22 @@ class GolfControllerTest {
     @Test
     void DrawDiscardPileDiscardFromHand(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"6","2","6","3","6","-1");
+        Collections.addAll(view.input,"6","1","p1","P2","P3","P4","p5","p6","-1","1","2","2","6","1","2","3","6","-1");
         GolfController controller = new GolfController(view);
         controller.gameStart();
         controller.game.gameOver = false;
         controller.game.turnOver = false;
         controller.game.turn = 2;
-        controller.view.displayHand(controller.game);
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        controller.gameRunner();
         assertThat(controller.game.discard.remove(0).toString()).isEqualTo("hearts,two");
         assertThat(controller.game.players[0].hand[5].toString()).isEqualTo("diamonds,three");
         assertThat(controller.game.players[1].hand[5].toString()).isEqualTo("hearts,eight");

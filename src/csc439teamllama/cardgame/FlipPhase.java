@@ -6,7 +6,7 @@ public class FlipPhase implements Phase{
     @Override
     public void execute(GolfGameModel game, GolfView view) {
         int playerNum = game.playerIndex()+1;
-        System.out.println("Player " +game.players[game.playerIndex()].name+ " must flip 2 cards before they start their turn, their hand is:");
+        view.sendMessageToPlayer("Player " +game.players[game.playerIndex()].name+ " must flip 2 cards before they start their turn, their hand is:");
         int turnedCards = 0;
         for (playingCard card: game.players[game.playerIndex()].hand) {
             if (card.getFacing() == playingCard.Facing.UP)

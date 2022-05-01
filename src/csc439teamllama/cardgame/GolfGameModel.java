@@ -31,7 +31,7 @@ public class GolfGameModel {
         if (playerNum > 4){
             Collections.addAll(deck,playingCard.createDeck());
         }
-        Collections.shuffle(deck);
+//        Collections.shuffle(deck);
         discard = new ArrayList<>();
         gameOver = false;
         turn = 1;

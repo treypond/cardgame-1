@@ -192,4 +192,5 @@ public class GolfCLIView extends GolfView {
             e.printStackTrace();
         }
     }
+
 }
