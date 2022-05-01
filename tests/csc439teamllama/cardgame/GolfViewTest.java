@@ -225,4 +225,22 @@ class GolfViewTest {
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"
         );
     }
+
+    @Test
+    void displayScoreBoard(){
+        GolfGameModel game = new GolfGameModel(2,1);
+        FakeGolfCLIView view = new FakeGolfCLIView();
+        GolfPlayerModel player = new GolfPlayerModel("jay");
+        GolfPlayerModel player1 = new GolfPlayerModel("josh");
+        GolfPlayerModel[] score = {player,player1};
+        game.scoreBoard = score;
+        view.displayScoreBoard(game);
+        assertThat(view.output).isEqualTo("-----SCOREBOARD-----\n" +
+                        "1. jay:   score for the hole: 0 points   score for the rest of the game: 0 points\n" +
+                        "2. josh:   score for the hole: 0 points   score for the rest of the game: 0 points\n"+
+                        "You are currently on hole 1 of a 1 hole game.\n"
+                );
+
+    }
+
 }
