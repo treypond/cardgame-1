@@ -165,36 +165,50 @@ class GolfControllerTest {
     @Test
     void PlayerExitsDuringGameDiscard(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"5","2","-1");
+        Collections.addAll(view.input,"2","2","joe","jay", "-1", "1", "2", "2");
         GolfController controller = new GolfController(view);
         controller.gameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        ((FakeGolfCLIView)controller.view).output = "";
+        controller.gameRunner();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
-                        "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
-                        " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
-                        " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
-                        " 88 8888           88 8888         88 8 8888         8 888888888888 \n" +
-                        " 88 8888           88 8888         88 8 8888         8 8888         \n" +
-                        " 88 8888   8888888 88 8888        ,8P 8 8888         8 8888         \n" +
-                        " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
-                        "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
-                        "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+"Player 1's Turn\n"+
-                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                "Player joe must flip 2 cards before they start their turn, their hand is:\n" +
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n" +
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 74 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-                        "Drawn card: diamonds,nine From: Deck\n"+
-                        "Enter 1-6 To Choose A Card From Your Hand To Replace\n"+
-                        "Enter 7 To Discard Chosen Card.\n"+
-                        "Or -1 To Exit\n"+
-                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                        "\nPlease pick a card in you hand to flip: Player joe must flip 2 cards before they start their turn, their hand is:\n" +
+                        "1.hearts,king 2.Card is face down. 3.Card is face down.\n" +
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nPlease pick a card in you hand to flip: Player joe must flip 2 cards before they start their turn, their hand is:\n\n"+
+                        "\njoe's current hand:\n" +
+                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n" +
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\njay's current hand:\n" +
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n" +
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nThe deck has 40 remaining\n" +
+                        "The discard pile is empty\n" +
+                        "Player joe's Turn\n" +
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: Drawn card: hearts,ace From: Deck\n" +
+                        "Enter 1-6 To Choose A Card From Your Hand To Replace\n" +
+                        "Enter 7 To Discard Chosen Card.\n" +
+                        "Or -1 To Exit\n" +
+                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n" +
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
                         "Enter Number To Proceed: ");
     }
     @Test
@@ -343,13 +357,13 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: How many holes for this game: "
         );
         assertThat(controller.game).isNull();
     }
