@@ -69,11 +69,11 @@ public class FakeGolfCLIView extends GolfView {
         for (GolfPlayerModel player: game.players
         ) {
             output+="\n";
-            output+=(player.name+"'s current hand:");
-            output += ("1."+player.hand[0].toString()+ " 2." + player.hand[1].toString()+ " 3." + player.hand[2].toString());
-            output+=("4."+player.hand[3].toString()+ " 5." + player.hand[4].toString()+ " 6." + player.hand[5].toString());
+            output+=(player.name+"'s current hand:\n");
+            output += ("1."+player.hand[0].toString()+ " 2." + player.hand[1].toString()+ " 3." + player.hand[2].toString()+"\n");
+            output+=("4."+player.hand[3].toString()+ " 5." + player.hand[4].toString()+ " 6." + player.hand[5].toString())+"\n";
         }
-        output+= "The deck has " + game.deck.size() + " remaining\n";
+        output+= "\nThe deck has " + game.deck.size() + " remaining\n";
 
         if( game.discard.size() == 0){
             output+="The discard pile is empty\n";

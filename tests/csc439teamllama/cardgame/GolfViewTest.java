@@ -67,8 +67,13 @@ class GolfViewTest {
 
                         "\nPlease pick a card in you hand to flip: Player jo must flip 2 cards before they start their turn, their hand is:\n"+
 
-                        "\n\njo's current hand:1.hearts,king 2.hearts,queen 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
-                        "jay's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 40 remaining\n"+
+                        "\n\njo's current hand:\n" +
+                                "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\njay's current hand:\n"+
+                                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                                "\nThe deck has 40 remaining\n"+
                         "The discard pile is empty\n" +
                         "Player jo's Turn\n"+
                         "1. Print Game State Again\n"+
@@ -102,8 +107,13 @@ class GolfViewTest {
         controllerTest.gameRunner();
         assertThat(((FakeGolfCLIView)controllerTest.view).output).isEqualTo(
                         "Player jo must flip 2 cards before they start their turn, their hand is:\n"+
-                "\n\njo's current hand:1.hearts,king 2.hearts,queen 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
-                        "jay's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 39 remaining\n"+
+                "\n\njo's current hand:\n" +
+                                "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\njay's current hand:\n"+
+                                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                                "\nThe deck has 39 remaining\n"+
                         "The top card on the discard pile is hearts,ace\n" +
                         "Player jo's Turn\n"+
                         "1. Print Game State Again\n"+

@@ -40,9 +40,9 @@ class GolfControllerTest {
     }
 
     @Test
-    void ControllerPromptReDisplay(){
+    void ControllerPromptReDisplay() {
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"4","1","p1","P2","P3","P4","-1","1","2","clear","1");
+        Collections.addAll(view.input, "4", "1", "p1", "P2", "P3", "P4", "-1", "clear", "1");
         GolfController controller = new GolfController(view);
         controller.gameStart();
         controller.game.gameOver = false;
@@ -57,36 +57,26 @@ class GolfControllerTest {
             }
         }
         controller.game.players[0].hand = new playingCard[]{new playingCard(playingCard.Facing.UP, playingCard.Suit.SPADES, playingCard.Number.ACE),
-                                                            new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
-                                                            new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
-                                                            new playingCard(true,4,12),
-                                                            new playingCard(true,4,3),
-                                                            new playingCard(true,3,11)};
+                new playingCard(playingCard.Facing.UP, playingCard.Suit.DIAMONDS, playingCard.Number.KING),
+                new playingCard(playingCard.Facing.UP, playingCard.Suit.CLUBS, playingCard.Number.TWO),
+                new playingCard(true, 4, 12),
+                new playingCard(true, 4, 3),
+                new playingCard(true, 3, 11)};
         controller.gameRunner();
-        assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "p1's current hand:1.clubs,two 2.diamonds,king 3.clubs,two4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
-                        "P2's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "P3's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "P4's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 27 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-                        "Player 1's Turn\n"+
-                        "1.spades,ace 2.diamonds,king 3.clubs,two\n"+
-                        "4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
-                        "The deck has 28 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "
-        );
+        assertThat(((FakeGolfCLIView) controller.view).output).isEqualTo(
+                "\n\np1's current hand:1.spades,ace 2.diamonds,king 3.clubs,two4.hearts,queen 5.hearts,three 6.clubs,jack\n" +
+                        "P2's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
+                        "P3's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
+                        "P4's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 28 remaining\n" +
+                        "The discard pile is empty\n" +
+                        "Player p1's Turn\n" +
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: ");
     }
-
     @Test
     void PlayerExitsDuringGameOptions(){
         FakeGolfCLIView view = new FakeGolfCLIView();
@@ -112,7 +102,7 @@ class GolfControllerTest {
     @Test
     void PlayerExitsDuringDecision(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"5","-1");
+        Collections.addAll(view.input,"5","1","p1","P2","P3","P4","p5","1","2","-1");
         GolfController controller = new GolfController(view);
         controller.gameStart();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
