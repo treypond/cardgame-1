@@ -104,7 +104,7 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "
+                        "\nHow many players for this game: How many holes for this game: "
         );
         assertThat(controller.game).isNull();
     }
@@ -272,7 +272,7 @@ class GolfControllerTest {
     @Test
     void OutOfBoundsDecision(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"7","0","44","abassjhd");
+        Collections.addAll(view.input,"3","2","joe", "jay", "josh", "1", "2", "44");
         GolfController controller = new GolfController(view);
         controller.gameStart();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
@@ -286,34 +286,34 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+
-                        "Player 1's Turn\n"+
-                        "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
+                        "\nHow many players for this game: How many holes for this game: \n"+
+                        "Enter a name for player 1 :\n"+
+                        "Enter a name for player 2 :\n"+
+                        "Enter a name for player 3 :Player joe must flip 2 cards before they start their turn, their hand is:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 62 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-                        "please input a number between 1 and 3\n"+"1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-
-                        "please input a number between 1 and 3\n"+"1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "+
-
-                        "please input a number between 1 and 3\n"+"1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
+                        "\nPlease pick a card in you hand to flip: Player joe must flip 2 cards before they start their turn, their hand is:\n" +
+                        "1.hearts,king 2.Card is face down. 3.Card is face down.\n" +
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nPlease pick a card in you hand to flip: Player joe must flip 2 cards before they start their turn, their hand is:\n\n"+
+                        "\njoe's current hand:1.hearts,king 2.hearts,queen 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
+                        "jay's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
+                        "josh's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 34 remaining"+
+                        "\nThe discard pile is empty"+
+                        "\nPlayer joe's Turn\n" +
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: please input a number between 1 and 4\n"+
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
                         "Enter Number To Proceed: "
+
         );
     }
     @Test
