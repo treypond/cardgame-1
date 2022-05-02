@@ -5,15 +5,14 @@ import java.util.InputMismatchException;
 public class FlipPhase implements Phase{
     @Override
     public void execute(GolfGameModel game, GolfView view) {
-        int playerNum = game.playerIndex()+1;
         int turnedCards = 0;
         for (playingCard card: game.players[game.playerIndex()].hand) {
             if (card.getFacing() == playingCard.Facing.UP)
                 turnedCards++;
         }
         if (turnedCards <2) {
+            view.sendMessageToPlayer("Player " +game.players[game.playerIndex()].name+ " must flip 2 cards before they start their turn, their hand is:");
             try {
-                view.sendMessageToPlayer("Player " +game.players[game.playerIndex()].name+ " must flip 2 cards before they start their turn, their hand is:");
                 view.displayHand(game);
                 int option = view.promptFlip(game)-1;
                 if (option == -2){

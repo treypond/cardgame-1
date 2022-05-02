@@ -220,16 +220,16 @@ class playingCardTest {
                 case KING -> kingCount++;
             }
         }
-        //  test numberes for a 3% margin of error
+        //  test numberes for a 5% margin of error
         System.out.println(faceDownCount +" "+ faceUpCount +" "+ spadeCount +" "+ heartCount +" "+ aceCount +" "+  twoCount +" "+  kingCount +" ");
-        Assertions.assertEquals(faceDownCount,500,30);
-        Assertions.assertEquals(faceUpCount,500,30);
-        Assertions.assertEquals(spadeCount,250,30);
-        Assertions.assertEquals(heartCount,250,30);
-        Assertions.assertEquals(heartCount,250,30);
-        Assertions.assertEquals(aceCount,76.9230769231,30);
-        Assertions.assertEquals(twoCount,76.9230769231,30);
-        Assertions.assertEquals(kingCount,76.9230769231,30);
+        Assertions.assertEquals(faceDownCount,500,50);
+        Assertions.assertEquals(faceUpCount,500,50);
+        Assertions.assertEquals(spadeCount,250,50);
+        Assertions.assertEquals(heartCount,250,50);
+        Assertions.assertEquals(heartCount,250,50);
+        Assertions.assertEquals(aceCount,76.9230769231,50);
+        Assertions.assertEquals(twoCount,76.9230769231,50);
+        Assertions.assertEquals(kingCount,76.9230769231,50);
     }
 
     @Test
