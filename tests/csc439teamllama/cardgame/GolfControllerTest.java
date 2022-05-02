@@ -248,13 +248,13 @@ class GolfControllerTest {
                         " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
                         "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
                         "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "+
-                        "please input a number: greater than 0\n"+
-                        "How many players for this game: "
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"+
+                        "\nHow many players for this game: How many holes for this game: "
         );
         assertThat(controller.game).isNull();
     }
