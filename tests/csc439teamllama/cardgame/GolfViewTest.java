@@ -65,9 +65,9 @@ class GolfViewTest {
                 "1.hearts,king 2.Card is face down. 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
 
-                        "\nPlease pick a card in you hand to flip: Player jo must flip 2 cards before they start their turn, their hand is:\n"+
+                        "\nPlease pick a card in you hand to flip: \n"+
 
-                        "\n\njo's current hand:\n" +
+                        "\njo's current hand:\n" +
                                 "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                                 "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
                         "\njay's current hand:\n"+
@@ -106,7 +106,6 @@ class GolfViewTest {
         controllerTest.game.discard.get(controllerTest.game.discard.size()-1).flipCard();
         controllerTest.gameRunner();
         assertThat(((FakeGolfCLIView)controllerTest.view).output).isEqualTo(
-                        "Player jo must flip 2 cards before they start their turn, their hand is:\n"+
                 "\n\njo's current hand:\n" +
                                 "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                                 "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+

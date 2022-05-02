@@ -64,10 +64,19 @@ class GolfControllerTest {
                 new playingCard(true, 3, 11)};
         controller.gameRunner();
         assertThat(((FakeGolfCLIView) controller.view).output).isEqualTo(
-                "\n\np1's current hand:1.spades,ace 2.diamonds,king 3.clubs,two4.hearts,queen 5.hearts,three 6.clubs,jack\n" +
-                        "P2's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
-                        "P3's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.\n" +
-                        "P4's current hand:1.Card is face down. 2.Card is face down. 3.Card is face down.4.Card is face down. 5.Card is face down. 6.Card is face down.The deck has 28 remaining\n" +
+                "\n\np1's current hand:\n" +
+                        "1.spades,ace 2.diamonds,king 3.clubs,two\n"+
+                        "4.hearts,queen 5.hearts,three 6.clubs,jack\n"+
+                        "\nP2's current hand:\n" +
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nP3's current hand:\n" +
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nP4's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n" +
+                                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nThe deck has 28 remaining\n"+
                         "The discard pile is empty\n" +
                         "Player p1's Turn\n" +
                         "1. Print Game State Again\n" +
@@ -102,31 +111,56 @@ class GolfControllerTest {
     @Test
     void PlayerExitsDuringDecision(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"5","1","p1","P2","P3","P4","p5","1","2","-1");
+        Collections.addAll(view.input,"5","1","p1","P2","P3","P4","p5","-1","1","2");
         GolfController controller = new GolfController(view);
         controller.gameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        controller.gameRunner();
+        ((FakeGolfCLIView)controller.view).output="";
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.gameRunner();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
-                        "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
-                        " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
-                        " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
-                        " 88 8888           88 8888         88 8 8888         8 888888888888 \n" +
-                        " 88 8888           88 8888         88 8 8888         8 8888         \n" +
-                        " 88 8888   8888888 88 8888        ,8P 8 8888         8 8888         \n" +
-                        " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
-                        "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
-                        "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+"Player 1's Turn\n"+
+                "\n\np1's current hand:\n"+
                         "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 74 remaining\n"+
-                        "The discard pile is empty\n"+
-                        "1. Print Game State Again\n"+
-                        "2. Pick Up From Deck\n"+
-                        "3. Pick Up From Discard\n"+
-                        "Or Enter -1 To Exit\n"+
-                        "Enter Number To Proceed: "
-        );
+
+                        "\nP2's current hand:\n"+
+                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                "\nP3's current hand:\n"+
+                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                "\nP4's current hand:\n"+
+                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                "\np5's current hand:\n"+
+                "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nThe deck has 22 remaining\n"+
+                        "The discard pile is empty\n" +
+                        "Player p1's Turn\n" +
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: ");
     }
     @Test
     void PlayerExitsDuringGameDiscard(){
@@ -166,34 +200,62 @@ class GolfControllerTest {
     @Test
     void TryToDrawDiscardEmpty(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"5","3","-1");
+        Collections.addAll(view.input,"5","1","p1","P2","P3","P4","p5","-1","1","2","-1","3");
         GolfController controller = new GolfController(view);
         controller.gameStart();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        controller.gameRunner();
+        ((FakeGolfCLIView)controller.view).output="";
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.gameRunner();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "     ,o888888o.        ,o888888o.     8 8888         8 8888888888   \n" +
-                        "    8888     `88.   . 8888     `88.   8 8888         8 8888         \n" +
-                        " ,8 8888       `8. ,8 8888       `8b  8 8888         8 8888         \n" +
-                        " 88 8888           88 8888        `8b 8 8888         8 8888         \n" +
-                        " 88 8888           88 8888         88 8 8888         8 888888888888 \n" +
-                        " 88 8888           88 8888         88 8 8888         8 8888         \n" +
-                        " 88 8888   8888888 88 8888        ,8P 8 8888         8 8888         \n" +
-                        " `8 8888       .8' `8 8888       ,8P  8 8888         8 8888         \n" +
-                        "    8888     ,88'   ` 8888     ,88'   8 8888         8 8888         \n" +
-                        "     `8888888P'        `8888888P'     8 888888888888 8 8888         \n\n"+
-                        "How many players for this game: "+"Player 1's Turn\n"+
+                "\n\np1's current hand:\n"+
                         "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 74 remaining\n"+
+
+                        "\nP2's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\nP3's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\nP4's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\np5's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nThe deck has 74 remaining\n"+
                         "The discard pile is empty\n"+
+                        "Player p1's Turn\n" +
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
+                        "4. Display Current Scores\n" +
                         "Or Enter -1 To Exit\n"+
                         "Enter Number To Proceed: "+
                         "Discard Is Empty! Please Draw from Deck\n"+
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
+                        "4. Display Current Scores\n" +
                         "Or Enter -1 To Exit\n"+
                         "Enter Number To Proceed: "
         );
@@ -202,31 +264,64 @@ class GolfControllerTest {
     @Test
     void TryToDrawDeckEmpty(){
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input,"5","-1","2");
+        Collections.addAll(view.input,"5","1","p1","P2","P3","P4","p5","-1","1","2","-1","2");
         GolfController controller = new GolfController(view);
         controller.gameStart();
-        controller.game.turn = 1;
-        ((FakeGolfCLIView)controller.view).output = "";
-        controller.game.discard.addAll(controller.game.deck);
-        controller.game.deck.clear();
         controller.game.gameOver = false;
         controller.game.turnOver = false;
-        controller.turn();
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+            }
+        }
+        controller.gameRunner();
+        ((FakeGolfCLIView)controller.view).output="";
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new FlipPhase();
+        controller.game.discard.addAll(controller.game.deck);
+        controller.game.deck.clear();
+        controller.gameRunner();
         assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
-                "Player 1's Turn\n"+
+                "\n\np1's current hand:\n"+
                         "1.hearts,king 2.hearts,queen 3.Card is face down.\n"+
                         "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
-                        "The deck has 0 remaining\n"+
+
+                        "\nP2's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\nP3's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\nP4's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+
+                        "\np5's current hand:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nThe deck has 0 remaining\n"+
                         "The top card on the discard pile is Card is face down.\n"+
+                        "Player p1's Turn\n" +
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
+                        "4. Display Current Scores\n" +
                         "Or Enter -1 To Exit\n"+
                         "Enter Number To Proceed: "+
                         "Deck Is Empty! Please Draw from Discard\n"+
                         "1. Print Game State Again\n"+
                         "2. Pick Up From Deck\n"+
                         "3. Pick Up From Discard\n"+
+                        "4. Display Current Scores\n" +
                         "Or Enter -1 To Exit\n"+
                         "Enter Number To Proceed: "
         );
