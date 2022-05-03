@@ -268,7 +268,8 @@ class GolfControllerTest {
                         "please input a number: greater than 0 for player and holes\n"+
                         "\nHow many players for this game: "+
                         "please input a number: greater than 0 for player and holes\n"+
-                        "\nHow many players for this game: How many holes for this game: "
+                        "\nHow many players for this game: How many holes for this game: "+
+                        "please input a number: greater than 0 for player and holes\n"
         );
         assertThat(controller.game).isNull();
     }
