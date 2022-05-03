@@ -26,32 +26,14 @@ public class FakeGolfCLIView extends GolfView {
     protected int[] gameStartOptions()  throws InputMismatchException{
         output+="\n";
         try{
-            output += "How many players for this game: ";
             int[] options = new int[2];
-            if(!input.isEmpty()) {
-                if (input.get(0).equals("clear")){
-                    output = "";
-                    input.remove(0);
-                }
-                options[0] = Integer.parseInt(input.remove(0));
-            }
-            else {
-                options[0] = -1;
-            }
+            output += "How many players for this game: ";
+            options[0] =  Integer.parseInt(getOption());
             if( options[0] < 1 && options[0] != -1){
                 throw new InputMismatchException();
             }
             output+= "How many holes for this game: ";
-            if(!input.isEmpty()) {
-                if (input.get(0).equals("clear")){
-                    output = "";
-                    input.remove(0);
-                }
-                options[1] = Integer.parseInt(input.remove(0));
-            }
-            else {
-                options[1] = -1;
-            }
+            options[1] = Integer.parseInt(getOption());
             if( options[1] < 1 && options[1] != -1){
                 throw new InputMismatchException();
             }
@@ -93,17 +75,7 @@ public class FakeGolfCLIView extends GolfView {
             output += ("4. Display Current Scores\n");
             output += "Or Enter -1 To Exit\n";
             output += "Enter Number To Proceed: ";
-            int option;
-            if(!input.isEmpty()) {
-                if (input.get(0).equals("clear")){
-                    output = "";
-                    input.remove(0);
-                }
-                option = Integer.parseInt(input.remove(0));
-            }
-            else {
-                option = -1;
-            }
+            int option = Integer.parseInt(getOption());
             if(option > 4 || option < 1 && option != -1){
                 throw new InputMismatchException();
             }
@@ -122,17 +94,7 @@ public class FakeGolfCLIView extends GolfView {
             output += "Or -1 To Exit\n";
             displayHand(game);
             output+= "Enter Number To Proceed: ";
-            int option;
-            if(!input.isEmpty()) {
-                if (input.get(0).equals("clear")){
-                    output = "";
-                    input.remove(0);
-                }
-                option = Integer.parseInt(input.remove(0));
-            }
-            else {
-                option = -1;
-            }
+            int option= Integer.parseInt(getOption());
             if(option > 7 || option < 1 && option != -1) {
                 throw new InputMismatchException();
             }
@@ -168,18 +130,7 @@ public class FakeGolfCLIView extends GolfView {
     @Override
     protected String promptPlayerName(int playerNum) {
         output+= ("\nEnter a name for player "+playerNum+ " :");
-        String option = "";
-        if(!input.isEmpty()) {
-            if (input.get(0).equals("clear")){
-                output = "";
-                input.remove(0);
-            }
-            option = input.remove(0);
-        }
-        else {
-            option = "-1";
-        }
-        return option;
+        return getOption();
     }
 
     @Override
@@ -191,16 +142,7 @@ public class FakeGolfCLIView extends GolfView {
         output+=("\nPlease pick a card in you hand to flip: ");
         int option;
         try {
-            if(!input.isEmpty()) {
-                if (input.get(0).equals("clear")){
-                    output = "";
-                    input.remove(0);
-                }
-                option = Integer.parseInt(input.remove(0));
-            }
-            else {
-                option = -1;
-            }
+            option = Integer.parseInt(getOption());
             if(option > 6 || option < 1 && option != -1){
                 throw new InputMismatchException();
             }
@@ -219,5 +161,20 @@ public class FakeGolfCLIView extends GolfView {
     protected void clearVars() {
         output = "";
         input.clear();
+    }
+
+    private String getOption(){
+        String option;
+        if(!input.isEmpty()) {
+            if (input.get(0).equals("clear")){
+                output = "";
+                input.remove(0);
+            }
+            option = input.remove(0);
+        }
+        else {
+            option = "-1";
+        }
+        return option;
     }
 }

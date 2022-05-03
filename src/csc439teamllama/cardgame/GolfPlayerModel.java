@@ -4,13 +4,11 @@ public class GolfPlayerModel implements Comparable<GolfPlayerModel>{
     protected playingCard[] hand;
     protected int score, totalscore;
     protected String name;
-    protected boolean flipHandled;
 
     /**Player Constructor which is initialized with an empty hand of playing cards*/
     public GolfPlayerModel(String playerName){
         hand = new playingCard[6];
         name = playerName;
-        flipHandled = false;
     }
 
     /**

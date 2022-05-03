@@ -42,7 +42,7 @@ class GolfControllerTest {
     @Test
     void ControllerPromptReDisplay() {
         FakeGolfCLIView view = new FakeGolfCLIView();
-        Collections.addAll(view.input, "4", "1", "p1", "P2", "P3", "P4", "-1", "clear", "1");
+        Collections.addAll(view.input, "4", "1", "p1", "P2", "P3", "P4", "-1", "1","clear", "1");
         GolfController controller = new GolfController(view);
         controller.gameStart();
         controller.game.gameOver = false;
@@ -667,8 +667,167 @@ class GolfControllerTest {
     }
 
     //make test for option 4 in draw phase, displayscoreboard
+    @Test
+    void optionDisplayScoreboard(){
+        FakeGolfCLIView view = new FakeGolfCLIView();
+        Collections.addAll(view.input, "2", "2", "p1", "p2", "-1","-1","4");
+        GolfController controller = new GolfController(view);
+        controller.gameStart();
 
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new EndPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+                controller.game.players[i].hand[j].setFacing(playingCard.Facing.UP);
+            }
+        }
+        controller.gameRunner();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.phase = new FlipPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.reverse(controller.game.deck);
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+                controller.game.players[i].hand[j].setFacing(playingCard.Facing.UP);
+            }
+        }
+        ((FakeGolfCLIView) controller.view).output = "";
+        controller.gameRunner();
+        assertThat(((FakeGolfCLIView) controller.view).output).isEqualTo(
+                "\n\np1's current hand:\n"+
+                        "1.spades,ace 2.spades,two 3.spades,three\n" +
+                        "4.spades,four 5.spades,five 6.spades,six\n"+
+
+                        "\np2's current hand:\n" +
+                        "1.spades,seven 2.spades,eight 3.spades,nine\n" +
+                        "4.spades,ten 5.spades,jack 6.spades,queen\n" +
+
+                        "\nThe deck has 40 remaining\n" +
+                        "The discard pile is empty\n" +
+                        "Player p1's Turn\n" +
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: " +
+                        "\n-----SCOREBOARD-----\n" +
+                        "1. p1:   score for the hole: 17 points   score for the rest of the game: 47 points\n" +
+                        "2. p2:   score for the hole: 54 points   score for the rest of the game: 23 points\n" +
+                        "You are currently on hole 2 of a 2 hole game.\n"+
+                        "1. Print Game State Again\n" +
+                        "2. Pick Up From Deck\n" +
+                        "3. Pick Up From Discard\n" +
+                        "4. Display Current Scores\n" +
+                        "Or Enter -1 To Exit\n" +
+                        "Enter Number To Proceed: "
+        );
+    }
     //make simple output test for end of hole
+    @Test
+    void endHoleOutputWithMoreHoles(){
+        FakeGolfCLIView view = new FakeGolfCLIView();
+        Collections.addAll(view.input, "2","2", "p1", "p2","-1");
+        GolfController controller = new GolfController(view);
+        controller.gameStart();
+        ((FakeGolfCLIView)controller.view).output = "";
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new EndPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+                controller.game.players[i].hand[j].setFacing(playingCard.Facing.UP);
+            }
+        }
+        controller.gameRunner();
+        assertThat(((FakeGolfCLIView)controller.view).output).isEqualTo(
+                "\n\np1's current hand:\n"+
+                        "1.hearts,king 2.hearts,queen 3.hearts,jack\n" +
+                        "4.hearts,ten 5.hearts,nine 6.hearts,eight\n" +
 
-    //make test for endholephase
+                        "\np2's current hand:\n" +
+                        "1.hearts,seven 2.hearts,six 3.hearts,five\n" +
+                        "4.hearts,four 5.hearts,three 6.hearts,two\n" +
+
+                        "\nThe deck has 40 remaining\n" +
+                        "The discard pile is empty\n" +
+                        "Player p1's Turn\n"+
+                        "p1's turn over, as well as the hole! Press enter\n"+
+                        "\nHole 1 over, moving to next hole.\n"+
+
+                        "\nPlayer p1 must flip 2 cards before they start their turn, their hand is:\n"+
+                        "1.Card is face down. 2.Card is face down. 3.Card is face down.\n"+
+                        "4.Card is face down. 5.Card is face down. 6.Card is face down.\n"+
+                        "\nPlease pick a card in you hand to flip: "
+        );
+    }
+
+    @Test
+    void endHoleOutputFinalHole() {
+        FakeGolfCLIView view = new FakeGolfCLIView();
+        Collections.addAll(view.input, "2", "2", "p1", "p2", "-1");
+        GolfController controller = new GolfController(view);
+        controller.gameStart();
+
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.turn = 1;
+        controller.game.phase = new EndPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+                controller.game.players[i].hand[j].setFacing(playingCard.Facing.UP);
+            }
+        }
+        controller.gameRunner();
+        controller.game.gameOver = false;
+        controller.game.turnOver = false;
+        controller.game.phase = new EndPhase();
+        controller.game.deck.clear();
+        Collections.addAll(controller.game.deck, playingCard.createDeck());
+        Collections.reverse(controller.game.deck);
+        for (int i = 0; i < controller.game.players.length; i++) {
+            for (int j = 0; j < 6; j++) {
+                controller.game.players[i].hand[j] = controller.game.deck.remove(controller.game.deck.size() - 1);
+                controller.game.players[i].hand[j].setFacing(playingCard.Facing.UP);
+            }
+        }
+        ((FakeGolfCLIView) controller.view).output = "";
+        controller.gameRunner();
+        assertThat(((FakeGolfCLIView) controller.view).output).isEqualTo(
+        "\n\np1's current hand:\n"+
+                "1.spades,ace 2.spades,two 3.spades,three\n" +
+                "4.spades,four 5.spades,five 6.spades,six\n"+
+
+                "\np2's current hand:\n" +
+                "1.spades,seven 2.spades,eight 3.spades,nine\n" +
+                "4.spades,ten 5.spades,jack 6.spades,queen\n" +
+
+                "\nThe deck has 40 remaining\n" +
+                "The discard pile is empty\n" +
+                "Player p1's Turn\n" +
+                "p1's turn over, as well as the hole! Press enter\n" +
+
+                "\nCongrats p1!\n" +
+
+                "\n-----SCOREBOARD-----\n" +
+                "1. p1:   score for the hole: 0 points   score for the rest of the game: 64 points\n" +
+                "2. p2:   score for the hole: 0 points   score for the rest of the game: 77 points\n" +
+                "You are currently on hole 2 of a 2 hole game.\n"
+        );
+    }
 }

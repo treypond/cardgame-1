@@ -16,7 +16,6 @@ public class HoleEndPhase implements Phase {
                   card.setFacing(playingCard.Facing.UP);
               }
               Collections.addAll(game.deck, game.players[i].hand);
-              game.players[i].flipHandled = false;
           }
           game.scoreboardUpdate();
         for (GolfPlayerModel player: game.players
@@ -28,19 +27,24 @@ public class HoleEndPhase implements Phase {
             card.setFacing(playingCard.Facing.DOWN);
         }
           Collections.shuffle(game.deck);
-
-          for(int i=0; i<game.players.length;i++){
-              for(int j=0; j<6; j++ ){
-                  game.players[i].hand[j]=game.deck.remove(game.deck.size()-1);
-              }
-          }
        game.phase= new FlipPhase();
         if(game.currentHole+1>game.totalHoles){
-            view.sendMessageToPlayer(" Congrats "+game.scoreBoard[0].name+"!");
+            for(int i=0; i<game.players.length;i++){
+                for (int j = 0; j < game.players[i].hand.length; j++) {
+                    game.players[i].hand[j] = null;
+                }
+            }
+            view.sendMessageToPlayer("Congrats "+game.scoreBoard[0].name+"!");
+            game.scoreboardUpdate();
             view.displayScoreBoard(game);
             game.gameOver=true;
         }
         else {
+            for(int i=0; i<game.players.length;i++){
+                for(int j=0; j<6; j++ ){
+                    game.players[i].hand[j]=game.deck.remove(game.deck.size()-1);
+                }
+            }
             view.sendMessageToPlayer("Hole " + game.currentHole + " over, moving to next hole.");
             view.spacer();
             game.currentHole++;
